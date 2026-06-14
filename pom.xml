@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.fuin</groupId>
+        <artifactId>pom</artifactId>
+        <version>2.0.2</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.fuin.dsl.cqrs.contexts</groupId>
+    <artifactId>ddd-cqrs-contexts</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>ddd-cqrs-contexts</name>
+    <description>Reusable CQRS DSL contexts and the Java code generated from them</description>
+
+    <modules>
+        <module>cqrs-common-model</module>
+        <module>cqrs-common-java</module>
+    </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <java.release.version>${java.version}</java.release.version>
+
+        <!-- fuin libraries used by the generated Java code -->
+        <org-fuin-bom.version>1.0.2-SNAPSHOT</org-fuin-bom.version>
+        <objects4j.version>0.11.1-SNAPSHOT</objects4j.version>
+        <ddd4j.version>0.8.0-SNAPSHOT</ddd4j.version>
+
+        <!-- Compile-time null-safety (JSpecify + NullAway via Error Prone) -->
+        <jspecify.version>1.0.0</jspecify.version>
+        <error-prone.version>2.50.0</error-prone.version>
+        <nullaway.version>0.13.6</nullaway.version>
+
+        <!-- CQRS DSL code generator -->
+        <srcgen4j.version>0.5.0-SNAPSHOT</srcgen4j.version>
+        <ddd-templates.version>0.2.0-SNAPSHOT</ddd-templates.version>
+
+        <!-- build plugins not managed by the parent -->
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Null-safety annotations (compile scope, used by @NullMarked/@Nullable) -->
+            <dependency>
+                <groupId>org.jspecify</groupId>
+                <artifactId>jspecify</artifactId>
+                <version>${jspecify.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.fuin</groupId>
+                <artifactId>bom</artifactId>
+                <version>${org-fuin-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.fuin.objects4j</groupId>
+                <artifactId>objects4j-bom</artifactId>
+                <version>${objects4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.fuin.ddd4j</groupId>
+                <artifactId>ddd-4-java-bom</artifactId>
+                <version>${ddd4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Error Prone + NullAway compile-time null-checking.
+                     Merges with the release configuration inherited from the fuin.org parent pom. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-XDcompilePolicy=simple</arg>
+                            <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
+                            <arg>--should-stop=ifError=FLOW</arg>
+                            <arg>-Xplugin:ErrorProne -XepDisableAllChecks -Xep:NullAway:ERROR -XepExcludedPaths:.*/src/test/.* -XepOpt:NullAway:OnlyNullMarked=true</arg>
+                        </compilerArgs>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>com.google.errorprone</groupId>
+                                <artifactId>error_prone_core</artifactId>
+                                <version>${error-prone.version}</version>
+                            </path>
+                            <path>
+                                <groupId>com.uber.nullaway</groupId>
+                                <artifactId>nullaway</artifactId>
+                                <version>${nullaway.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.fuin.srcgen4j</groupId>
+                    <artifactId>srcgen4j-maven-plugin</artifactId>
+                    <version>${srcgen4j.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

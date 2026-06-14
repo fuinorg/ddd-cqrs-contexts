@@ -1,0 +1,150 @@
+context common {
+    
+    // Defines custom constraints
+	namespace constraints {
+	
+		import common.types.*
+	
+		/** Makes sure a string is not empty. */
+		constraint NotEmpty input String {
+			
+			message "The value cannot be empty"
+			
+		}
+
+		/**
+		 * Makes sure a string has exactly a given size.
+	 	 */
+		constraint ExactLength input String {
+	
+			/** Expected length. */
+			Integer expected
+	        
+	        message "Expected an exact length of {value}, but value was: '${input}'"
+	        
+		}
+
+		/**
+		 * Makes sure a string has a defined length (min/max).
+		 */
+		constraint Length input String {
+			
+			/** Expected minimum length (inclusive). */
+			Integer min
+	
+			/** Expected maximum length (inclusive). */
+			Integer max
+	
+	        message "Expected a length between {min} and {max} characters, but value was: '${input}'"
+	
+		}
+	
+		/**
+		 * Makes sure a string has at a maximum length.
+	 	 */
+		constraint MaxLength input String {
+	
+			/** Expected maximum length (inclusive). */
+			Integer expected
+	
+			message "Expected a maximum length of {value} characters, but value was: '${input}'"
+		
+		}
+
+
+		/**
+		 * Makes sure a numeric is not greater than a given value.
+	 	 */
+		constraint MaxValue input Long {
+	
+			/** Expected maximum value (inclusive). */
+			Long expected
+	
+			message "Expected a maximum value of {value}, but actual was: ${input}"
+			
+		}
+	
+		/**
+		 * Makes sure a string has at least a given length.
+		 */
+		constraint MinLength input String {
+		
+			/** Expected minimum length (inclusive). */
+			Integer expected
+						
+			message "Expected a minimum length of {value} characters, but value was: ${input}"
+			
+		}
+
+		/**
+		 * Makes sure a numeric is not less than a given value.
+		 */
+		constraint MinValue input Long {
+	
+			/** Expected minimum value (inclusive). */
+			Long expected
+			
+			message "Expected a minimum value of {value}, but actual was: ${input}"
+			
+		}
+
+		/**
+		 * Makes sure a numeric is not less than or greater than a given value.
+		 */
+		constraint ValueRange input Long {
+			
+			/** Expected minimum value (inclusive). */
+			Long min
+			
+			/** Expected maximum value (inclusive). */
+			Long max
+			
+			message "Expected a value between {min} and {max}, but actual was: ${input}"
+			
+		}
+	
+		/**
+		 * Makes sure a string matches a given pattern.
+		 */	
+		constraint Pattern input String {
+			
+			/** Expected pattern. */
+			String pattern
+			
+			message "The value does not match the pattern '{value}': ${input}"
+			
+		}
+		
+		/** Makes sure a collection contains no null elements. */
+		constraint NoNullElements input List {
+			
+			message "The list cannot contain null elements: ${input}"
+			
+		}
+		
+		/** Makes sure a collection is not empty. */
+		constraint ListNotEmpty input List {
+			
+			message "The list cannot be empty"
+			
+		}
+
+		/**
+		 * Makes sure a list has a defined size (min/max).
+		 */
+		constraint ListLength input List {
+			
+			/** Expected minimum size (inclusive). */
+			Integer min
+	
+			/** Expected maximum size (inclusive). */
+			Integer max
+	
+	        message "Expected a size between {min} and {max} entries, but value was: '${input}'"
+	
+		}
+		
+	}
+
+}
+

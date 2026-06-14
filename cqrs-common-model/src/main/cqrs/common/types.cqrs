@@ -1,0 +1,71 @@
+context common {
+
+    // Defines basic types that will be mapped to Java types directly 
+    namespace types {
+
+		/** 8-bit signed two's complement integer with a minimum value of -128 and a maximum value of 127 (inclusive). See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Byte.html">java.lang.Byte</a>. */
+		type Byte 
+		
+		/** 16-bit signed two's complement integer with a minimum value of -32,768 and a maximum value of 32,767 (inclusive). See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Short.html">java.lang.Short</a>. */
+		type Short
+		
+		/** 32-bit signed two's complement integer, which has a minimum value of -231 and a maximum value of 231-1. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">java.lang.Integer</a>. */
+		type Integer
+		
+		/** 64-bit two's complement integer. The signed long has a minimum value of -263 and a maximum value of 263-1. See <a ref="http://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">java.lang.Long</a>. */
+		type Long
+		
+		/** Single-precision 32-bit IEEE 754 floating point. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Float.html">java.lang.Float</a>. */
+		type Float
+		
+		/** Double-precision 64-bit IEEE 754 floating point. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Double.html">java.lang.Double</a>. */
+		type Double
+		
+		/** A type that has only two possible values: true and false. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">java.lang.Boolean</a>. */
+		type Boolean
+		
+		/** Single 16-bit Unicode character. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Character.html">java.lang.Character</a>. */
+		type Character
+		
+		/** Represents 16-bit Unicode strings. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">java.lang.String</a>. */
+		type String
+		
+		/** A date. */
+		type Date
+		
+		/** A time. */
+		type Time
+		
+		/** A date and time. */
+		type Timestamp
+		
+		/** Universally unique identifier. See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html">java.util.UUID</a>. */
+		type UUID
+		
+		/** Represents a currency. <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Currency.html">java.util.Currency</a>. */
+		type Currency
+		
+		/** Arbitrary-precision signed decimal number. See <a href="http://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html">java.math.BigDecimal</a>. */
+		type BigDecimal
+		
+		/** Represents a specific geographical, political, or cultural region (language, country, variant). See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html">java.util.Locale</a>. */
+		type Locale
+		
+		/** Any type. See "java.lang.Object". */    
+		type Object
+		
+		/** An ordered list of entity identifiers. An aggregate root will be the first entry if it's contained in the list. See <a href="https://github.com/fuinorg/ddd-4-java/blob/master/src/main/java/org/fuin/ddd4j/ddd/EntityIdPath.java">org.fuin.ddd4j.ddd.EntityIdPath</a>. */
+		type EntityIdPath
+
+		/** A group of objects. See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">java.util.Collection</a>. */    
+		type Collection generics 1
+		
+		/** An ordered collection (also known as sequence). See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.htmll">java.util.List</a>. */    
+		type List generics 1
+
+        /** Binary data. */
+		type Binary
+
+     }
+
+}

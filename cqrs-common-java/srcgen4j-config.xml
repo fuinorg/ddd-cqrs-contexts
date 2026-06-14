@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srcgen4j-config xmlns="http://www.fuin.org/srcgen4j/commons/0.5.0"
+	xmlns:xtext="http://www.fuin.org/srcgen4j/core/xtext/0.5.0"
+	xmlns:emf="http://www.fuin.org/srcgen4j/core/emf/0.5.0">
+
+	<variables>
+		<!-- The cqrs files of the "common" context, read straight from the sibling module -->
+		<variable name="modelPath" value="cqrs-common-model/src/main/cqrs/common" />
+		<variable name="copyrightHeader" value="" />
+		<variable name="basepkg" value="org.fuin.dsl.cqrs" />
+		<variable name="jpa" value="false" />
+		<variable name="jaxb" value="false" />
+		<variable name="jaxb_elements" value="false" />
+		<variable name="jsonb" value="false" />
+		<variable name="jackson" value="true" />
+	</variables>
+
+	<projects>
+		<!-- Generate into this module itself -->
+		<project name="common" path="." maven="true">
+			<!-- Maven default folder -->
+			<folder name="mainJava" path="cqrs-common-java/src/main/java" create="false" override="false" clean="false" />
+			<folder name="mainRes" path="cqrs-common-java/src/main/resources" create="false" override="false" clean="false" />
+			<folder name="genMainJava" path="cqrs-common-java/src-gen/main/java" clean="true" cleanExclude="\..*" />
+			<folder name="genMainRes" path="cqrs-common-java/src-gen/main/resources" create="true" clean="true" />
+			<folder name="testJava" path="cqrs-common-java/src/test/java" create="false" override="false" clean="false" />
+			<folder name="testRes" path="cqrs-common-java/src/test/resources" create="false" override="false" clean="false" />
+			<folder name="genTestJava" path="cqrs-common-java/src-gen/test/java" create="true" clean="true" />
+			<folder name="genTestRes" path="cqrs-common-java/src-gen/test/resources" create="true" clean="true" />
+		</project>
+	</projects>
+
+	<parsers>
+		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
+			<config>
+				<xtext:xtext-parser-config modelPath="${modelPath}" modelExt="cqrs"
+										   setupClass="org.fuin.dsl.cqrs.CqrsDslStandaloneSetup" />
+			</config>
+		</parser>
+	</parsers>
+
+	<generators>
+
+		<generator name="commonGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator"
+				   parser="cqrsParser" project="common">
+			<config>
+				<emf:emf-generator-config>
+
+					<!-- Pseudo generator that only maps the external "types.cqrs" to Java types -->
+					<emf:artifact-factory artifact="ExternalTypes" class="org.fuin.dsl.ddd.gen.resourceset.CtxExternalTypes" />
+
+					<emf:artifact-factory artifact="simpleStrVO" class="org.fuin.dsl.ddd.gen.valueobject.SimpleStringValueObjectArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="aggregateId" class="org.fuin.dsl.ddd.gen.aggregateid.SimpleAggregateIdArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="entityId" class="org.fuin.dsl.ddd.gen.entityid.SimpleEntityIdArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="valueObject" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="validatorAnnotation" class="org.fuin.dsl.ddd.gen.constr.ValidatorAnnotationArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="validator" class="org.fuin.dsl.ddd.gen.constr.ValidatorArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory">
+						<variable name="basepkg" value="${basepkg}" />
+					</emf:artifact-factory>
+
+				</emf:emf-generator-config>
+			</config>
+
+			<artifact name="simpleStrVO" project="common" folder="genMainJava" />
+			<artifact name="aggregateId" project="common" folder="genMainJava" />
+			<artifact name="entityId" project="common" folder="genMainJava" />
+			<artifact name="valueObject" project="common" folder="genMainJava" />
+			<artifact name="validatorAnnotation" project="common" folder="genMainJava" />
+			<artifact name="validator" project="common" folder="mainJava" />
+			<artifact name="enum" project="common" folder="genMainJava" />
+			<artifact name="exception" project="common" folder="genMainJava" />
+			<artifact name="pkginfo" project="common" folder="genMainJava" />
+
+		</generator>
+	</generators>
+
+</srcgen4j-config>

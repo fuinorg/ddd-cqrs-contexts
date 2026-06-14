@@ -5,7 +5,7 @@
 
 	<variables>
 		<!-- The cqrs files of the "common" context, read straight from the sibling module -->
-		<variable name="modelPath" value="cqrs-common-model/src/main/cqrs/common" />
+		<variable name="modelPath" value="cqrs-common-model/src/main/cqrs" />
 		<variable name="copyrightHeader" value="" />
 		<variable name="basepkg" value="org.fuin.dsl.cqrs" />
 		<variable name="jpa" value="false" />

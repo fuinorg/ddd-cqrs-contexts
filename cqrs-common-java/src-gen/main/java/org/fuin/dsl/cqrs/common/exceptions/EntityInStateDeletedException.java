@@ -1,5 +1,6 @@
 package org.fuin.dsl.cqrs.common.exceptions;
 
+import java.io.Serial;
 import java.util.Objects;
 import org.fuin.ddd4j.core.EntityIdPath;
 import org.fuin.objects4j.common.Contract;
@@ -11,6 +12,7 @@ import org.fuin.objects4j.core.KeyValue;
  */
 public final class EntityInStateDeletedException extends UniquelyNumberedException {
 
+    @Serial
     private static final long serialVersionUID = 1000L;
 
     private EntityIdPath entityIdPath;

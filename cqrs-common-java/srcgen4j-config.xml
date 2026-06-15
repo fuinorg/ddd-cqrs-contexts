@@ -12,7 +12,7 @@
 		<variable name="jaxb" value="false" />
 		<variable name="jaxb_elements" value="false" />
 		<variable name="jsonb" value="false" />
-		<variable name="jackson" value="true" />
+		<variable name="jackson" value="false" />
 	</variables>
 
 	<projects>
@@ -49,16 +49,7 @@
 					<!-- Pseudo generator that only maps the external "types.cqrs" to Java types -->
 					<emf:artifact-factory artifact="ExternalTypes" class="org.fuin.dsl.ddd.gen.resourceset.CtxExternalTypes" />
 
-					<emf:artifact-factory artifact="simpleStrVO" class="org.fuin.dsl.ddd.gen.valueobject.SimpleStringValueObjectArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="aggregateId" class="org.fuin.dsl.ddd.gen.aggregateid.SimpleAggregateIdArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="entityId" class="org.fuin.dsl.ddd.gen.entityid.SimpleEntityIdArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="valueObject" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory">
+					<emf:artifact-factory artifact="valueObjectGen" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory">
 						<variable name="basepkg" value="${basepkg}" />
 					</emf:artifact-factory>
 					<emf:artifact-factory artifact="validatorAnnotation" class="org.fuin.dsl.ddd.gen.constr.ValidatorAnnotationArtifactFactory">
@@ -80,10 +71,7 @@
 				</emf:emf-generator-config>
 			</config>
 
-			<artifact name="simpleStrVO" project="common" folder="genMainJava" />
-			<artifact name="aggregateId" project="common" folder="genMainJava" />
-			<artifact name="entityId" project="common" folder="genMainJava" />
-			<artifact name="valueObject" project="common" folder="genMainJava" />
+			<artifact name="valueObjectGen" project="common" folder="genMainJava" />
 			<artifact name="validatorAnnotation" project="common" folder="genMainJava" />
 			<artifact name="validator" project="common" folder="mainJava" />
 			<artifact name="enum" project="common" folder="genMainJava" />

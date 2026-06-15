@@ -1,4 +1,4 @@
-context common {
+context org.fuin.dsl.cqrs.common {
 
     // Defines basic types that will be mapped to Java types directly 
     namespace types {

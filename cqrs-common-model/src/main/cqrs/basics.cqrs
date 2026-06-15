@@ -1,9 +1,9 @@
-context common {
+context org.fuin.dsl.cqrs.common {
     
     namespace basics {
     
-        import common.types.*
-        import common.constraints.*
+        import org.fuin.dsl.cqrs.common.types.*
+        import org.fuin.dsl.cqrs.common.constraints.*
     
         /**
          * Classification of the data related to the "General Data Protection Regulation" (GDPR).

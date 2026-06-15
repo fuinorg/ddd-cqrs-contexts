@@ -1,9 +1,9 @@
-context common {
+context org.fuin.dsl.cqrs.common {
     
     // Defines custom constraints
 	namespace constraints {
 	
-		import common.types.*
+		import org.fuin.dsl.cqrs.common.types.*
 	
 		/** Makes sure a string is not empty. */
 		constraint NotEmpty input String {

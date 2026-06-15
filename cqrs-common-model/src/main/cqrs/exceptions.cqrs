@@ -1,8 +1,8 @@
-context common {
+context org.fuin.dsl.cqrs.common {
     
     namespace exceptions {
     
-        import common.types.*
+        import org.fuin.dsl.cqrs.common.types.*
 
         /**
          * Expected the entity to be in state 'deleted', but was not.

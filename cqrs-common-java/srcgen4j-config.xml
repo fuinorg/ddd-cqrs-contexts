@@ -7,7 +7,6 @@
 		<!-- The cqrs files of the "common" context, read straight from the sibling module -->
 		<variable name="modelPath" value="cqrs-common-model/src/main/cqrs" />
 		<variable name="copyrightHeader" value="" />
-		<variable name="basepkg" value="org.fuin.dsl.cqrs" />
 		<variable name="jpa" value="false" />
 		<variable name="jaxb" value="false" />
 		<variable name="jaxb_elements" value="false" />
@@ -49,24 +48,12 @@
 					<!-- Pseudo generator that only maps the external "types.cqrs" to Java types -->
 					<emf:artifact-factory artifact="ExternalTypes" class="org.fuin.dsl.ddd.gen.resourceset.CtxExternalTypes" />
 
-					<emf:artifact-factory artifact="valueObjectGen" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="validatorAnnotation" class="org.fuin.dsl.ddd.gen.constr.ValidatorAnnotationArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="validator" class="org.fuin.dsl.ddd.gen.constr.ValidatorArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
-					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory">
-						<variable name="basepkg" value="${basepkg}" />
-					</emf:artifact-factory>
+					<emf:artifact-factory artifact="valueObjectGen" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory" />
+					<emf:artifact-factory artifact="validatorAnnotation" class="org.fuin.dsl.ddd.gen.constr.ValidatorAnnotationArtifactFactory" />
+					<emf:artifact-factory artifact="validator" class="org.fuin.dsl.ddd.gen.constr.ValidatorArtifactFactory" />
+					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory" />
+					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory" />
+					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory" />
 
 				</emf:emf-generator-config>
 			</config>

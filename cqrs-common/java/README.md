@@ -3,8 +3,8 @@
 The **Java code generated** from the "common" CQRS DSL context, packaged as a JAR for use as a
 dependency.
 
-Part of [ddd-cqrs-contexts](../README.md). The DSL source it is generated from lives in
-[`cqrs-common-model`](../cqrs-common-model/README.md).
+Part of [cqrs-common](../README.md) (in [ddd-cqrs-contexts](../../README.md)). The DSL source
+it is generated from lives in the sibling module [`cqrs-common-model`](../model/README.md).
 
 ## How it is built
 
@@ -14,7 +14,7 @@ generates Java into [`src-gen/main/java`](src-gen/main/java). The
 `build-helper-maven-plugin` then adds that directory as an additional compile source root.
 
 ```
-../cqrs-common-model (.cqrs)  ──▶  src-gen/main/java (generated)  ──▶  cqrs-common-java.jar
+../model (.cqrs)  ──▶  src-gen/main/java (generated)  ──▶  cqrs-common-java.jar
 ```
 
 Generation configuration: [`srcgen4j-config.xml`](srcgen4j-config.xml).
@@ -30,7 +30,7 @@ Generation configuration: [`srcgen4j-config.xml`](srcgen4j-config.xml).
 ## Null-safety
 
 The generated and hand-written code is `@NullMarked` (JSpecify) and checked at compile time by
-NullAway via Error Prone, as configured in the parent [`pom.xml`](../pom.xml).
+NullAway via Error Prone, as configured in the root [`pom.xml`](../../pom.xml).
 
 ## Using it as a dependency
 
@@ -50,5 +50,5 @@ Released versions come from Maven Central; `-SNAPSHOT` versions from Sonatype Sn
 ## Building
 
 ```bash
-../mvnw -pl cqrs-common-java -am clean install
+../../mvnw -pl :cqrs-common-java -am clean install
 ```

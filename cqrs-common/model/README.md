@@ -3,7 +3,7 @@
 The reusable **"common"** CQRS DSL context. This module contains only the DSL source — the
 single source of truth from which Java (and potentially other artifacts) is generated.
 
-Part of [ddd-cqrs-contexts](../README.md).
+Part of [cqrs-common](../README.md) (in [ddd-cqrs-contexts](../../README.md)).
 
 ## Contents
 
@@ -28,7 +28,7 @@ cqrs-common-model-<version>-cqrs.tar.gz
 
 The `cqrs` classifier lets other projects depend on and reuse this context as a code-generation
 input. The Java generated from it lives in the sibling module
-[`cqrs-common-java`](../cqrs-common-java/README.md).
+[`cqrs-common-java`](../java/README.md).
 
 ## Reusing this model in another DSL project
 

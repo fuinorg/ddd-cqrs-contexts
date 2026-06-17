@@ -21,8 +21,7 @@
     <description>Reusable CQRS DSL contexts and the Java code generated from them</description>
 
     <modules>
-        <module>cqrs-common-model</module>
-        <module>cqrs-common-java</module>
+        <module>cqrs-common</module>
     </modules>
 
     <properties>

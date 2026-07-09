@@ -15,12 +15,12 @@
 		<variable name="jackson" value="false" />
 	</variables>
 
-	<projects>
+	<modules>
 		<!-- Generate into this module itself. Paths are relative to the reactor root where the build is
 		     executed (same as "modelPath" above), so this points at the "java" module directory; its
 		     "src-gen/main/java" is added as a compile source root by the build-helper plugin. -->
-		<project name="shared" path="cqrs-common/java" maven="true" />
-	</projects>
+		<module name="shared" path="cqrs-common/java" maven="true" />
+	</modules>
 
 	<parsers>
 		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
@@ -33,8 +33,7 @@
 
 	<generators>
 
-		<generator name="sharedGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator"
-				   parser="cqrsParser" project="shared">
+		<generator name="sharedGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator" parser="cqrsParser">
 			<config>
 				<emf:emf-generator-config>
 

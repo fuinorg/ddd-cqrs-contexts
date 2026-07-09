@@ -8,23 +8,23 @@ import org.jspecify.annotations.Nullable;
 public enum PhoneType {
 
     /**
-                     * A mobile phone number is a unique sequence of digits assigned
-                     * to a mobile phone or mobile network for the purpose of making and 
-                     * receiving calls, sending and receiving text messages, and using 
-                     * other mobile services. It differs from a landline number because 
-                     * it's associated with a mobile device and its wireless network connection, 
-                     * allowing for mobility and use outside of a fixed location. 
-                     */
+    	                 * A mobile phone number is a unique sequence of digits assigned
+    	                 * to a mobile phone or mobile network for the purpose of making and 
+    	                 * receiving calls, sending and receiving text messages, and using 
+    	                 * other mobile services. It differs from a landline number because 
+    	                 * it's associated with a mobile device and its wireless network connection, 
+    	                 * allowing for mobility and use outside of a fixed location. 
+    	                 */
     MOBILE(1),
     
         /**
-                     * A landline phone number is a traditional telephone number connected 
-                     * to a fixed-line network, typically using physical wires (copper or 
-                     * fiber optic cables) to transmit voice calls. These numbers are associated
-                     * with a specific location, like a home or office, and are part of the Public
-                     * Switched Telephone Network (PSTN). Unlike mobile phones, landlines do not
-                     * rely on cellular networks or radio waves. 
-                     */
+    	                 * A landline phone number is a traditional telephone number connected 
+    	                 * to a fixed-line network, typically using physical wires (copper or 
+    	                 * fiber optic cables) to transmit voice calls. These numbers are associated
+    	                 * with a specific location, like a home or office, and are part of the Public
+    	                 * Switched Telephone Network (PSTN). Unlike mobile phones, landlines do not
+    	                 * rely on cellular networks or radio waves. 
+    	                 */
     LANDLINE(2)
     
     ;

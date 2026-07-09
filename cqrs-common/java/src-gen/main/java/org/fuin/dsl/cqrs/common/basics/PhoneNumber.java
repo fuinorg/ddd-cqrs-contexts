@@ -21,7 +21,7 @@ import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
 
 /**
- * A phone number is a unique sequence of digits assigned to a telephone line,     enabling calls and text messages to reach a specific person or device. It     acts as a unique identifier within a telecommunications network, allowing     users to connect with others. Phone numbers are always stored in international     format with plus sign (+), then country code, city code, and local phone number.
+ * A phone number is a unique sequence of digits assigned to a telephone line, enabling calls and text messages to reach a specific person or device. It acts as a unique identifier within a telecommunications network, allowing users to connect with others. Phone numbers are always stored in international format with plus sign (+), then country code, city code, and local phone number.
  */
 @Immutable
 @Generated("Generated class - Manual changes will be overwritten")

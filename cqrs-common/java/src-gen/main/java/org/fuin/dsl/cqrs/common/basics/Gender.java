@@ -4,7 +4,7 @@ import java.util.List;
 import org.fuin.objects4j.common.Contract;
 import org.jspecify.annotations.Nullable;
 
-/** The male sex or the female sex, especially when considered with reference     to social and cultural differences rather than biological ones. */
+/** The male sex or the female sex, especially when considered with reference to social and cultural differences rather than biological ones. */
 public enum Gender {
 
     /** Not yet known. */

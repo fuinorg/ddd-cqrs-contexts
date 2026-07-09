@@ -21,7 +21,7 @@ import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
 
 /**
- * An email address is a unique identifier that specifies where electronic mail     messages should be delivered. It acts like a digital mailbox, allowing users     to send and receive messages over the internet. The standard format is     "username@domain.com", where "username" is specific to the user and "domain.com"     represents the email service provider.
+ * An email address is a unique identifier that specifies where electronic mail messages should be delivered. It acts like a digital mailbox, allowing users to send and receive messages over the internet. The standard format is "username@domain.com", where "username" is specific to the user and "domain.com" represents the email service provider.
  */
 @Immutable
 @Generated("Generated class - Manual changes will be overwritten")

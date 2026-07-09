@@ -1,41 +1,46 @@
-context org.fuin.dsl.cqrs.common {
-    
-    namespace exceptions {
-    
-        import org.fuin.dsl.cqrs.common.types.*
+project org.fuin.dsl.cqrs {
 
-        /**
-         * Expected the entity to be in state 'deleted', but was not.
-         */
-        exception EntityNotInStateDeletedException cid 1001 {
-        	EntityIdPath entityIdPath
-            message "Expected the entity to be in state 'deleted', but was not: ${entityIdPath}"
-        }
+	context common {
     
-        /**
-         * Expected the entity to be in normal state, but was already (soft) deleted.
-         */
-        exception EntityInStateDeletedException cid 1002 {
-        	EntityIdPath entityIdPath
-            message "Expected the entity to be in normal state, but was 'deleted': ${entityIdPath}"
-        }
-
-        /**
-         * The maximum number of items was exceeded.
-         */
-        exception LimitExceededException {
-            Integer max
-            message "The maximum number of items ({max}) was exceeded"
-        }
-
-        /**
-         * A name that is expected to be unique does already exist.
-         */
-        exception DuplicateNameException {
-            String name
-            message "The name '{name}' already exists"
-        }
-
-    }
-    
+	    namespace exceptions {
+	    
+	        import org.fuin.dsl.cqrs.common.types.*
+	
+	        /**
+	         * Expected the entity to be in state 'deleted', but was not.
+	         */
+	        exception EntityNotInStateDeletedException cid 1001 {
+	        	EntityIdPath entityIdPath
+	            message "Expected the entity to be in state 'deleted', but was not: ${entityIdPath}"
+	        }
+	    
+	        /**
+	         * Expected the entity to be in normal state, but was already (soft) deleted.
+	         */
+	        exception EntityInStateDeletedException cid 1002 {
+	        	EntityIdPath entityIdPath
+	            message "Expected the entity to be in normal state, but was 'deleted': ${entityIdPath}"
+	        }
+	
+	        /**
+	         * The maximum number of items was exceeded.
+	         */
+	        exception LimitExceededException {
+	            Integer max
+	            message "The maximum number of items ({max}) was exceeded"
+	        }
+	
+	        /**
+	         * A name that is expected to be unique does already exist.
+	         */
+	        exception DuplicateNameException {
+	            String name
+	            message "The name '{name}' already exists"
+	        }
+	
+	    }
+	    
+	}
+	
 }
+	

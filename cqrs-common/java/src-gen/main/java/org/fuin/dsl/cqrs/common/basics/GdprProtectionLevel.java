@@ -4,30 +4,30 @@ import java.util.List;
 import org.fuin.objects4j.common.Contract;
 import org.jspecify.annotations.Nullable;
 
-/** Classification of the data related to the "General Data Protection Regulation" (GDPR). */
+/** Classification of the data related to the \"General Data Protection Regulation\" (GDPR). */
 public enum GdprProtectionLevel {
 
     /**
-                    * No protection required.
-                    */
+    	                * No protection required.
+    	                */
     NONE(0),
     
         /**
-                    * Personal data whose unlawful processing could adversely affect the data subject's social standing or economic situation. 
-                    * The impact of the damage would be limited and manageable.
-                    */
+    	                * Personal data whose unlawful processing could adversely affect the data subject"s social standing or economic situation.
+    	                * The impact of the damage would be limited and manageable.
+    	                */
     NORMAL(1),
     
         /**
-                    * Personal data which, if processed unlawfully, could significantly affect the data subject's social standing or economic situation. 
-                    * The impact on the data subject would be considerable.
-                    */
+    	                * Personal data which, if processed unlawfully, could significantly affect the data subject's social standing or economic situation. 
+    	                * The impact on the data subject would be considerable.
+    	                */
     HIGH(2),
     
         /**
-                    * Personal data that, if processed unlawfully, would pose a risk to life and limb or the personal freedom of the data subject.
-                    * The consequences of the damage would be of a directly existentially threatening, catastrophic extent for those affected.
-                    */
+    	                * Personal data that, if processed unlawfully, would pose a risk to life and limb or the personal freedom of the data subject.
+    	                * The consequences of the damage would be of a directly existentially threatening, catastrophic extent for those affected.
+    	                */
     VERY_HIGH(3)
     
     ;

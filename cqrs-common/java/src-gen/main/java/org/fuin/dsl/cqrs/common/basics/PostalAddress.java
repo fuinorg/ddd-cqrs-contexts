@@ -21,7 +21,7 @@ import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
 
 /**
- * A postal address, also known as a mailing address, is the location where mail     and packages can be delivered. It typically includes the recipient's name,     street address or P.O. Box number, city, state, and postal code.
+ * A postal address, also known as a mailing address, is the location where mail and packages can be delivered. It typically includes the recipient's name, street address or P.O. Box number, city, state, and postal code.
  */
 @Immutable
 @Generated("Generated class - Manual changes will be overwritten")

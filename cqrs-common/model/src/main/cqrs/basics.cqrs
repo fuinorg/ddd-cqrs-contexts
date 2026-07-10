@@ -6,7 +6,25 @@ project org.fuin.dsl.cqrs {
 	
 	        import org.fuin.dsl.cqrs.common.types.*
 	        import org.fuin.dsl.cqrs.common.constraints.*
-	
+
+            /**
+             * Marks a domain event that brings an entity or an aggregate into existence.method.
+             */
+            annotation GenesisEvent {
+            }
+
+            /**
+             * Markes a domain event that soft-deletes an entity.
+             */
+            annotation ExileEvent {
+            }
+
+            /**
+             * Marks a domain event that hard-deletes an entity.
+             */
+            annotation ExodusEvent {
+            }
+
 	        /**
 	         * Classification of the data related to the \"General Data Protection Regulation\" (GDPR).
 	         */

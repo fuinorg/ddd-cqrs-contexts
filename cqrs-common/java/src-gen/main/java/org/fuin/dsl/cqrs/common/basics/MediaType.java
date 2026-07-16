@@ -5,6 +5,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.annotation.Documented;
@@ -19,6 +20,7 @@ import org.fuin.objects4j.common.ConstraintViolationException;
 import org.fuin.objects4j.common.HasPublicStaticIsValidMethod;
 import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
+import org.fuin.objects4j.core.Validators;
 
 /**
  * A media type (formerly known as a Multipurpose Internet Mail Extensions or MIME type) indicates the nature and format of a document, file, or assortment of bytes. MIME types are defined and standardized in IETF's RFC 6838. The format is something like: "type/subtype;parameter=value" (Example: "text/plain" or "application/json; encoding=UTF-8; version=1").
@@ -32,9 +34,7 @@ public final class MediaType implements ValueObjectWithBaseType<String>, Compara
     @Serial
     private static final long serialVersionUID = 1000L;
 
-    private static final int MAX_LENGTH = 100;
-
-    @MediaTypeStr
+    @Size(min=3, max=127)
     private String value;
 
     /**
@@ -114,11 +114,7 @@ public final class MediaType implements ValueObjectWithBaseType<String>, Compara
         if (value == null) {
             return true;
         }
-        if (value.isEmpty()) {
-            return false;
-        }
-        final String trimmed = value.trim();
-        return trimmed.length() <= MAX_LENGTH;
+        return Validators.get().validateValue(MediaType.class, "value", value).isEmpty();
     }
 
     /**

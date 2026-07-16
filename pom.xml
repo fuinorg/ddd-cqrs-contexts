@@ -31,7 +31,7 @@
 
         <!-- fuin libraries used by the generated Java code -->
         <org-fuin-bom.version>1.0.2-SNAPSHOT</org-fuin-bom.version>
-        <objects4j.version>0.11.1-SNAPSHOT</objects4j.version>
+        <objects4j.version>0.12.0-SNAPSHOT</objects4j.version>
         <ddd4j.version>0.8.0-SNAPSHOT</ddd4j.version>
 
         <!-- Compile-time null-safety (JSpecify + NullAway via Error Prone) -->

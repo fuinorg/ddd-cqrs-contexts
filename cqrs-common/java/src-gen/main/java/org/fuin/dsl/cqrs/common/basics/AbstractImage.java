@@ -8,7 +8,7 @@ import org.fuin.objects4j.common.ValueObject;
 /**
  * Representation of an image used for uploads.
  */
-public final class Image implements ValueObject, Serializable {
+public abstract class AbstractImage implements ValueObject, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1000L;
@@ -21,7 +21,7 @@ public final class Image implements ValueObject, Serializable {
      * Default constructor.
      */
     @SuppressWarnings("NullAway.Init")
-    protected Image() {
+    protected AbstractImage() {
         super();
     }
     
@@ -31,7 +31,7 @@ public final class Image implements ValueObject, Serializable {
      * @param pathAndName Path and name of a file in the storage.
      * @param data Binary data.
      */
-    public Image(final FilePathAndName pathAndName, final byte[] data) {
+    public AbstractImage(final FilePathAndName pathAndName, final byte[] data) {
         super();
         Contract.requireArgNotNull("pathAndName", pathAndName);
         Contract.requireArgNotNull("data", data);

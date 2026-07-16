@@ -5,6 +5,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.annotation.Documented;
@@ -19,6 +20,7 @@ import org.fuin.objects4j.common.ConstraintViolationException;
 import org.fuin.objects4j.common.HasPublicStaticIsValidMethod;
 import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
+import org.fuin.objects4j.core.Validators;
 
 /**
  * Path and name of a file in the storage.
@@ -32,9 +34,7 @@ public final class FilePathAndName implements ValueObjectWithBaseType<String>, C
     @Serial
     private static final long serialVersionUID = 1000L;
 
-    private static final int MAX_LENGTH = 100;
-
-    @FilePathAndNameStr
+    @Size(min=1, max=248)
     private String value;
 
     /**
@@ -114,11 +114,7 @@ public final class FilePathAndName implements ValueObjectWithBaseType<String>, C
         if (value == null) {
             return true;
         }
-        if (value.isEmpty()) {
-            return false;
-        }
-        final String trimmed = value.trim();
-        return trimmed.length() <= MAX_LENGTH;
+        return Validators.get().validateValue(FilePathAndName.class, "value", value).isEmpty();
     }
 
     /**

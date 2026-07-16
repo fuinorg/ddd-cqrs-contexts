@@ -5,6 +5,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.annotation.Documented;
@@ -19,6 +20,7 @@ import org.fuin.objects4j.common.ConstraintViolationException;
 import org.fuin.objects4j.common.HasPublicStaticIsValidMethod;
 import org.fuin.objects4j.common.HasPublicStaticValueOfMethod;
 import org.fuin.objects4j.common.ValueObjectWithBaseType;
+import org.fuin.objects4j.core.Validators;
 
 /**
  * An email address is a unique identifier that specifies where electronic mail messages should be delivered. It acts like a digital mailbox, allowing users to send and receive messages over the internet. The standard format is "username@domain.com", where "username" is specific to the user and "domain.com" represents the email service provider.
@@ -32,9 +34,7 @@ public final class EmailAddress implements ValueObjectWithBaseType<String>, Comp
     @Serial
     private static final long serialVersionUID = 1000L;
 
-    private static final int MAX_LENGTH = 100;
-
-    @EmailAddressStr
+    @Size(min=3, max=320)
     private String value;
 
     /**
@@ -114,11 +114,7 @@ public final class EmailAddress implements ValueObjectWithBaseType<String>, Comp
         if (value == null) {
             return true;
         }
-        if (value.isEmpty()) {
-            return false;
-        }
-        final String trimmed = value.trim();
-        return trimmed.length() <= MAX_LENGTH;
+        return Validators.get().validateValue(EmailAddress.class, "value", value).isEmpty();
     }
 
     /**

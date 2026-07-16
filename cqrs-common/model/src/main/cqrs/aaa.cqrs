@@ -2,7 +2,20 @@ project org.fuin.dsl.cqrs {
 
 	/** A hint for the SrcGen4J code generation. */
 	hint SrcGen4J {
-        "package": "${project}.${context}.${namespace}"
+        "package": "${project}.${context}.${namespace}",
+        "constraintMappings": [
+            "org.fuin.dsl.cqrs.common.constraints.NotEmpty=jakarta.validation.constraints.NotEmpty",
+            "org.fuin.dsl.cqrs.common.constraints.Length(min,max)=jakarta.validation.constraints.Size(min=min,max=max)",
+            "org.fuin.dsl.cqrs.common.constraints.Pattern(pattern)=jakarta.validation.constraints.Pattern(regexp=pattern)",
+            "org.fuin.dsl.cqrs.common.constraints.ListNotEmpty=jakarta.validation.constraints.NotEmpty",
+            "org.fuin.dsl.cqrs.common.constraints.ListLength(min,max)=jakarta.validation.constraints.Size(min=min,max=max)",
+            "org.fuin.dsl.cqrs.common.constraints.ExactLength(expected)=jakarta.validation.constraints.Size(min=expected,max=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.MaxLength(expected)=jakarta.validation.constraints.Size(max=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.MinLength(expected)=jakarta.validation.constraints.Size(min=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.MaxValue(expected)=jakarta.validation.constraints.Max(value=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.MinValue(expected)=jakarta.validation.constraints.Min(value=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.ValueRange(min,max)=jakarta.validation.constraints.Min(value=min),jakarta.validation.constraints.Max(value=max)"
+        ]
     }
 
 }

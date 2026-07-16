@@ -2,30 +2,27 @@ package org.fuin.dsl.cqrs.common.constraints;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.List;
 
-/** Makes sure a collection contains no null elements. */
-// CHECKSTYLE:OFF:LineLength
-public final class NoNullElementsValidator implements ConstraintValidator<NoNullElements, List> {
-    // CHECKSTYLE:ON:LineLength
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Makes sure a collection contains no null elements.
+ */
+public final class NoNullElementsValidator implements ConstraintValidator<NoNullElements, List<?>> {
 
     @Override
-    public final void initialize(final NoNullElements annotation) {
-        // Nothing to initialize
+    public void initialize(final NoNullElements annotation) {
+        // Nothing to do
     }
 
     @Override
-    public final boolean isValid(final List object, final ConstraintValidatorContext ctx) {
-        // A null list is considered valid (use a separate not-null constraint to forbid null)
-        if (object == null) {
+    public boolean isValid(final List<?> list, final ConstraintValidatorContext ctx) {
+        if (list == null || list.isEmpty()) {
             return true;
         }
-        for (final Object element : object) {
-            if (element == null) {
-                return false;
-            }
-        }
-        return true;
+        // Cannot use "filter(...).findFirst()" here: an Optional cannot hold the null element it found
+        return list.stream().noneMatch(Objects::isNull);
     }
 
 }

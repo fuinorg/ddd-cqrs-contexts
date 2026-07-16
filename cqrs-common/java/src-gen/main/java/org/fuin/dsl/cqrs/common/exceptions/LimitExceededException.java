@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.Objects;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.core.KeyValue;
+import org.fuin.objects4j.core.KeyValueEL;
 
 /**
  * The maximum number of items was exceeded.
@@ -21,7 +22,7 @@ public final class LimitExceededException extends Exception {
      * @param max 32-bit signed two's complement integer, which has a minimum value of -231 and a maximum value of 231-1. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">java.lang.Integer</a>.
      */
     public LimitExceededException(final Integer max) {
-        super(Objects.requireNonNull(KeyValue.replace("The maximum number of items ({max}) was exceeded",  new KeyValue("max", max))));
+        super(Objects.requireNonNull(KeyValueEL.replace("The maximum number of items ({max}) was exceeded",  new KeyValue("max", max))));
         Contract.requireArgNotNull("max", max);
         
         this.max = max;

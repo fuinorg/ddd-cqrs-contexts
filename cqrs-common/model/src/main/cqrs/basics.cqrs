@@ -176,7 +176,7 @@ project org.fuin.dsl.cqrs {
 	         * and packages can be delivered. It typically includes the recipient's name, 
 	         * street address or P.O. Box number, city, state, and postal code. 
 	         */
-	        value-object PostalAddress base String {
+	        value-object PostalAddress {
 	            
 	            List<String> lines invariants ListLength(1, 10)
 	            

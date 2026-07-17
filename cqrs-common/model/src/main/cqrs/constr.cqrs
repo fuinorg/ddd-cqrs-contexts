@@ -9,9 +9,16 @@ project org.fuin.dsl.cqrs {
 		
 			/** Makes sure a string is not empty. */
 			constraint NotEmpty input String {
-				
+
 				message "The value cannot be empty"
-				
+
+			}
+
+			/** Makes sure a string is not empty after trimming it. */
+			constraint NotBlank input String {
+
+				message "Cannot be null or trimmed empty, but value was: '${input}'"
+
 			}
 	
 			/**
@@ -111,6 +118,77 @@ project org.fuin.dsl.cqrs {
 			constraint Positive input BigDecimal | BigInteger | Number | Double | Float | Long | Integer | Short | Byte {
 
 				message "Expected a value more than zero, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric is zero or more.
+			 */
+			constraint PositiveOrZero input BigDecimal | BigInteger | Number | Double | Float | Long | Integer | Short | Byte {
+
+				message "Expected a value zero or more, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric is less than zero.
+			 */
+			constraint Negative input BigDecimal | BigInteger | Number | Double | Float | Long | Integer | Short | Byte {
+
+				message "Expected a value less than zero, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric is zero or less.
+			 */
+			constraint NegativeOrZero input BigDecimal | BigInteger | Number | Double | Float | Long | Integer | Short | Byte {
+
+				message "Expected a value zero or less, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric is not less than a given value.
+			 * In contrast to "MinValue" this also works for decimals, because the value is defined as a string.
+			 * "Double" and "Float" are not supported due to rounding errors.
+			 */
+			constraint DecimalMin input BigDecimal | BigInteger | Number | Long | Integer | Short | Byte {
+
+				/** Lowest allowed value (inclusive), written as a number string. */
+				String expected
+
+				message "Expected a value of at least {expected}, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric is not greater than a given value.
+			 * In contrast to "MaxValue" this also works for decimals, because the value is defined as a string.
+			 * "Double" and "Float" are not supported due to rounding errors.
+			 */
+			constraint DecimalMax input BigDecimal | BigInteger | Number | Long | Integer | Short | Byte {
+
+				/** Highest allowed value (inclusive), written as a number string. */
+				String expected
+
+				message "Expected a value of at most {expected}, but actual was: ${input}"
+
+			}
+
+			/**
+			 * Makes sure a numeric has at most a given number of integral and fractional digits.
+			 * "Double" and "Float" are not supported due to rounding errors.
+			 */
+			constraint Digits input BigDecimal | BigInteger | Number | Long | Integer | Short | Byte {
+
+				/** Maximum number of allowed integral digits. */
+				Integer integer
+
+				/** Maximum number of allowed fractional digits. */
+				Integer fraction
+
+				message "Expected at most {integer} integral and {fraction} fractional digits, but actual was: ${input}"
 
 			}
 

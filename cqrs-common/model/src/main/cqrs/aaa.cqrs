@@ -15,7 +15,14 @@ project org.fuin.dsl.cqrs {
             "org.fuin.dsl.cqrs.common.constraints.MaxValue(expected)=jakarta.validation.constraints.Max(value=expected)",
             "org.fuin.dsl.cqrs.common.constraints.MinValue(expected)=jakarta.validation.constraints.Min(value=expected)",
             "org.fuin.dsl.cqrs.common.constraints.ValueRange(min,max)=jakarta.validation.constraints.Min(value=min),jakarta.validation.constraints.Max(value=max)",
-            "org.fuin.dsl.cqrs.common.constraints.Positive=jakarta.validation.constraints.Positive"
+            "org.fuin.dsl.cqrs.common.constraints.Positive=jakarta.validation.constraints.Positive",
+            "org.fuin.dsl.cqrs.common.constraints.PositiveOrZero=jakarta.validation.constraints.PositiveOrZero",
+            "org.fuin.dsl.cqrs.common.constraints.Negative=jakarta.validation.constraints.Negative",
+            "org.fuin.dsl.cqrs.common.constraints.NegativeOrZero=jakarta.validation.constraints.NegativeOrZero",
+            "org.fuin.dsl.cqrs.common.constraints.NotBlank=jakarta.validation.constraints.NotBlank",
+            "org.fuin.dsl.cqrs.common.constraints.DecimalMin(expected)=jakarta.validation.constraints.DecimalMin(value=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.DecimalMax(expected)=jakarta.validation.constraints.DecimalMax(value=expected)",
+            "org.fuin.dsl.cqrs.common.constraints.Digits(integer,fraction)=jakarta.validation.constraints.Digits(integer=integer,fraction=fraction)"
         ]
     }
 

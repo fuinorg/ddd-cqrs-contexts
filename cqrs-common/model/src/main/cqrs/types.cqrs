@@ -49,7 +49,13 @@ project org.fuin.dsl.cqrs {
 			
 			/** Arbitrary-precision signed decimal number. See <a href="http://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html">java.math.BigDecimal</a>. */
 			type BigDecimal
-			
+
+			/** Arbitrary-precision integer. See <a href="http://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html">java.math.BigInteger</a>. */
+			type BigInteger
+
+			/** Any numeric type. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Number.html">java.lang.Number</a>. */
+			type Number
+
 			/** Represents a specific geographical, political, or cultural region (language, country, variant). See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html">java.util.Locale</a>. */
 			type Locale
 			
@@ -62,9 +68,15 @@ project org.fuin.dsl.cqrs {
 			/** A group of objects. See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">java.util.Collection</a>. */    
 			type Collection generics 1
 			
-			/** An ordered collection (also known as sequence). See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.htmll">java.util.List</a>. */    
+			/** An ordered collection (also known as sequence). See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.htmll">java.util.List</a>. */
 			type List generics 1
-	
+
+			/** A collection that contains no duplicate elements. See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Set.html">java.util.Set</a>. */
+			type Set generics 1
+
+			/** An object that maps keys to values. See <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html">java.util.Map</a>. */
+			type Map generics 2
+
 	        /** Binary data. */
 			type Binary
 	

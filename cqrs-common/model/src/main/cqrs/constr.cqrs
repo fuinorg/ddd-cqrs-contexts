@@ -106,8 +106,17 @@ project org.fuin.dsl.cqrs {
 			}
 		
 			/**
+			 * Makes sure a numeric is more than zero.
+			 */
+			constraint Positive input BigDecimal | BigInteger | Number | Double | Float | Long | Integer | Short | Byte {
+
+				message "Expected a value more than zero, but actual was: ${input}"
+
+			}
+
+			/**
 			 * Makes sure a string matches a given pattern.
-			 */	
+			 */
 			constraint Pattern input String {
 				
 				/** Expected pattern. */

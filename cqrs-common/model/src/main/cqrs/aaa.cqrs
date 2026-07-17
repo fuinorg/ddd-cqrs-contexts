@@ -14,7 +14,8 @@ project org.fuin.dsl.cqrs {
             "org.fuin.dsl.cqrs.common.constraints.MinLength(expected)=jakarta.validation.constraints.Size(min=expected)",
             "org.fuin.dsl.cqrs.common.constraints.MaxValue(expected)=jakarta.validation.constraints.Max(value=expected)",
             "org.fuin.dsl.cqrs.common.constraints.MinValue(expected)=jakarta.validation.constraints.Min(value=expected)",
-            "org.fuin.dsl.cqrs.common.constraints.ValueRange(min,max)=jakarta.validation.constraints.Min(value=min),jakarta.validation.constraints.Max(value=max)"
+            "org.fuin.dsl.cqrs.common.constraints.ValueRange(min,max)=jakarta.validation.constraints.Min(value=min),jakarta.validation.constraints.Max(value=max)",
+            "org.fuin.dsl.cqrs.common.constraints.Positive=jakarta.validation.constraints.Positive"
         ]
     }
 

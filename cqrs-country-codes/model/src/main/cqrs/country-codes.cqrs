@@ -1,4 +1,4 @@
-project org.fuin.dsl.cqrs.internationalization {
+project org.fuin.dsl.cqrs {
 
     context countrycodes {
 

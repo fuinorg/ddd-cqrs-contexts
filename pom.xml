@@ -22,7 +22,7 @@
 
     <modules>
         <module>cqrs-common</module>
-        <!-- module>cqrs-country-codes</module -->
+        <module>cqrs-country-codes</module>
     </modules>
 
     <properties>

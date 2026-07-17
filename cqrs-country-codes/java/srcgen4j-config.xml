@@ -16,20 +16,21 @@
 		<variable name="jackson" value="false" />
 	</variables>
 
-	<projects>
-		<!-- Generate into this module itself -->
-		<project name="country-codes" path="." maven="true">
-			<!-- Maven default folder -->
-			<folder name="mainJava" path="cqrs-country-codes/java/src/main/java" create="false" override="false" clean="false" />
-			<folder name="mainRes" path="cqrs-country-codes/java/src/main/resources" create="false" override="false" clean="false" />
-			<folder name="genMainJava" path="cqrs-country-codes/java/src-gen/main/java" create="true" clean="true" cleanExclude="\..*" />
-			<folder name="genMainRes" path="cqrs-country-codes/java/src-gen/main/resources" create="true" clean="true" />
-			<folder name="testJava" path="cqrs-country-codes/java/src/test/java" create="false" override="false" clean="false" />
-			<folder name="testRes" path="cqrs-country-codes/java/src/test/resources" create="false" override="false" clean="false" />
-			<folder name="genTestJava" path="cqrs-country-codes/java/src-gen/test/java" create="true" clean="true" />
-			<folder name="genTestRes" path="cqrs-country-codes/java/src-gen/test/resources" create="true" clean="true" />
-		</project>
-	</projects>
+	<modules>
+		<!-- Generate into this module itself. The module path is relative to the reactor root where the
+		     build is executed (same as "modelPath" above), so it points at the "java" module directory;
+		     its "src-gen/main/java" is added as a compile source root by the build-helper plugin.
+		     The folders are declared explicitly with create="true" because this module has no
+		     hand-written main sources yet, so the directories do not exist on a fresh checkout. -->
+		<module name="shared" path="cqrs-country-codes/java" maven="true">
+			<folder name="mainJava" path="src/main/java" create="true" override="false" clean="false" />
+			<folder name="mainRes" path="src/main/resources" create="true" override="false" clean="false" />
+			<folder name="genMainJava" path="src-gen/main/java" create="true" clean="true" cleanExclude="\..*" />
+			<folder name="genMainRes" path="src-gen/main/resources" create="true" clean="true" />
+			<folder name="testJava" path="src/test/java" create="true" override="false" clean="false" />
+			<folder name="testRes" path="src/test/resources" create="true" override="false" clean="false" />
+		</module>
+	</modules>
 
 	<parsers>
 		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
@@ -43,7 +44,7 @@
 	<generators>
 
 		<generator name="countryCodesGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator"
-				   parser="cqrsParser" project="country-codes">
+				   parser="cqrsParser">
 			<config>
 				<emf:emf-generator-config>
 
@@ -59,13 +60,6 @@
 
 				</emf:emf-generator-config>
 			</config>
-
-			<artifact name="valueObjectGen" project="country-codes" folder="genMainJava" />
-			<artifact name="validatorAnnotation" project="country-codes" folder="genMainJava" />
-			<artifact name="validator" project="country-codes" folder="mainJava" />
-			<artifact name="enum" project="country-codes" folder="genMainJava" />
-			<artifact name="exception" project="country-codes" folder="genMainJava" />
-			<artifact name="pkginfo" project="country-codes" folder="genMainJava" />
 
 		</generator>
 	</generators>

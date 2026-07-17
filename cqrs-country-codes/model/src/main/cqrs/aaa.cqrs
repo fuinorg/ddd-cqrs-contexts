@@ -1,0 +1,8 @@
+project org.fuin.dsl.cqrs {
+
+	/** A hint for the SrcGen4J code generation. */
+	hint SrcGen4J {
+        "package": "${project}.${context}.${namespace}"
+    }
+
+}

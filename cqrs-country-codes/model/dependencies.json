@@ -1,0 +1,17 @@
+[
+  {
+    "type": "maven",
+    "namespaces": [
+      "org.fuin.dsl.cqrs.common.types",
+      "org.fuin.dsl.cqrs.common.basics",
+      "org.fuin.dsl.cqrs.common.constraints",
+      "org.fuin.dsl.cqrs.common.exceptions"
+    ],
+    "data": {
+      "groupId": "org.fuin.dsl.cqrs.contexts",
+      "artifactId": "cqrs-common-model",
+      "version": "0.1.0-SNAPSHOT",
+      "local": "../../cqrs-common/model/src/main/cqrs"
+    }
+  }
+]

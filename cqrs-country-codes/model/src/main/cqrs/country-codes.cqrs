@@ -1,0 +1,68 @@
+project org.fuin.dsl.cqrs.internationalization {
+
+    context countrycodes {
+
+        // Country and subdivision codes defined by the ISO 3166 standard
+        namespace codes {
+
+            import org.fuin.dsl.cqrs.common.types.*
+            import org.fuin.dsl.cqrs.common.constraints.*
+
+            /**
+             * ISO 3166-1 alpha-2 code: a two-letter code that represents a country name,
+             * recommended as the general purpose code (e.g. "DE" for Germany, "US" for the
+             * United States).
+             */
+            value-object Alpha2Code {
+
+                String value invariants Pattern("[A-Z]{2}") {
+                    examples "DE" "US"
+                }
+
+            }
+
+            /**
+             * ISO 3166-1 alpha-3 code: a three-letter code that represents a country name,
+             * which is usually more closely related to the country name (e.g. "DEU" for
+             * Germany, "USA" for the United States).
+             */
+            value-object Alpha3Code {
+
+                String value invariants Pattern("[A-Z]{3}") {
+                    examples "DEU" "USA"
+                }
+
+            }
+
+            /**
+             * ISO 3166-1 numeric code: a three-digit code that represents a country name
+             * (e.g. "276" for Germany, "840" for the United States). Stored as a string to
+             * preserve leading zeros (e.g. "004" for Afghanistan).
+             */
+            value-object NumericCode {
+
+                String value invariants Pattern("[0-9]{3}") {
+                    examples "276" "840" "004"
+                }
+
+            }
+
+            /**
+             * ISO 3166-2 subdivision code: the alpha-2 country code, a separator and up to
+             * three alphanumeric characters identifying a principal subdivision such as a
+             * province or state (e.g. "ID-RI" for the Riau province of Indonesia, "NG-RI"
+             * for the Rivers province in Nigeria).
+             */
+            value-object SubdivisionCode {
+
+                String value invariants Length(4, 6), Pattern("[A-Z]{2}-[A-Z0-9]{1,3}") {
+                    examples "ID-RI" "NG-RI"
+                }
+
+            }
+
+        }
+
+    }
+
+}

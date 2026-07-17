@@ -19,13 +19,23 @@ build output.
 
 ## Modules
 
-This is a Maven multi-module build. The **"common"** context is grouped under the
-[`cqrs-common`](cqrs-common/README.md) module, which contains two submodules:
+This is a Maven multi-module build. Each bounded context is grouped under its own module, with a
+`model` submodule (the `.cqrs` DSL source, published as a `tar.gz` with classifier `cqrs`) and a
+`java` submodule (the generated Java, built into a JAR).
+
+### [`cqrs-common`](cqrs-common/README.md) — the reusable "common" context
 
 | Module | Description |
 | ------ | ----------- |
-| [`cqrs-common-model`](cqrs-common/model/README.md) | The reusable **"common"** CQRS DSL context — the `.cqrs` source files (types, basics, constraints, exceptions). Packaged and published as a `tar.gz` (classifier `cqrs`) so other projects can reuse the model. |
-| [`cqrs-common-java`](cqrs-common/java/README.md) | The **Java code generated** from the "common" context, plus hand-written validators and tests. Built into a normal JAR for use as a dependency. |
+| [`cqrs-common-model`](cqrs-common/model/README.md) | The reusable **"common"** CQRS DSL context — the `.cqrs` source files (types, basics, constraints, exceptions). |
+| [`cqrs-common-java`](cqrs-common/java/README.md) | The **Java code generated** from the "common" context, plus hand-written validators and tests. |
+
+### [`cqrs-country-codes`](cqrs-country-codes/README.md) — ISO 3166 country codes
+
+| Module | Description |
+| ------ | ----------- |
+| [`cqrs-country-codes-model`](cqrs-country-codes/model/README.md) | The **"country-codes"** CQRS DSL context — ISO 3166 country and subdivision codes. **Reuses `cqrs-common`** by importing its namespaces as external types/constraints (resolved via `dependencies.json`). |
+| [`cqrs-country-codes-java`](cqrs-country-codes/java/README.md) | The **Java code generated** from the "country-codes" context. Depends on the `cqrs-common-java` JAR. |
 
 See each module's own README for details.
 

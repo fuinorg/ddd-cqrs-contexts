@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.fuin.dsl.cqrs.contexts</groupId>
+        <artifactId>cqrs-country-codes</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>cqrs-country-codes-java</artifactId>
+    <packaging>jar</packaging>
+
+    <name>cqrs-country-codes-java</name>
+    <description>Java code generated from the "country-codes" CQRS DSL context (ISO 3166)</description>
+
+    <dependencies>
+
+        <!-- The "common" context reused by the generated code (constraint annotations and
+             validators referenced by the country-code value objects live here) -->
+        <dependency>
+            <groupId>org.fuin.dsl.cqrs.contexts</groupId>
+            <artifactId>cqrs-common-java</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Null-safety annotations (@NullMarked / @Nullable) -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+        </dependency>
+
+        <!-- Libraries used by the generated Java code -->
+        <dependency>
+            <groupId>org.fuin.objects4j</groupId>
+            <artifactId>objects4j-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.fuin.objects4j</groupId>
+            <artifactId>objects4j-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.fuin.objects4j</groupId>
+            <artifactId>objects4j-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.fuin.ddd4j</groupId>
+            <artifactId>ddd-4-java-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
+        <!-- Test (versions managed by the imported org.fuin:bom) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Bean Validation provider + EL implementation to run the validators in tests -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.el</groupId>
+            <artifactId>jakarta.el-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Generate the Java code from the "country-codes" cqrs model (read from ../model).
+                 Imports of the "common" context are resolved via ../model/dependencies.json. -->
+            <plugin>
+                <groupId>org.fuin.srcgen4j</groupId>
+                <artifactId>srcgen4j-maven-plugin</artifactId>
+                <configuration>
+                    <jaxbClasses>
+                        <jaxbClass>org.fuin.srcgen4j.core.xtext.XtextParserConfig</jaxbClass>
+                        <jaxbClass>org.fuin.srcgen4j.core.emf.EMFGeneratorConfig</jaxbClass>
+                    </jaxbClasses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>srcgen4j</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>process-template</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.fuin.dsl.ddd</groupId>
+                        <artifactId>ddd-templates</artifactId>
+                        <version>${ddd-templates.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!-- Add the generated code as a compile source root -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-generated-sources</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src-gen/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

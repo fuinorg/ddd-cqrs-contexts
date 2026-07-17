@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srcgen4j-config xmlns="http://www.fuin.org/srcgen4j/commons/0.5.0"
+	xmlns:xtext="http://www.fuin.org/srcgen4j/core/xtext/0.5.0"
+	xmlns:emf="http://www.fuin.org/srcgen4j/core/emf/0.5.0">
+
+	<variables>
+		<!-- The cqrs files of the "country-codes" context. Imports of the "common" context are
+		     resolved (for cross references only, not generated) via ../model/dependencies.json.
+		     Paths are relative to the reactor root where the build is executed. -->
+		<variable name="modelPath" value="cqrs-country-codes/model/src/main/cqrs" />
+		<variable name="copyrightHeader" value="" />
+		<variable name="jpa" value="false" />
+		<variable name="jaxb" value="false" />
+		<variable name="jaxb_elements" value="false" />
+		<variable name="jsonb" value="false" />
+		<variable name="jackson" value="false" />
+	</variables>
+
+	<projects>
+		<!-- Generate into this module itself -->
+		<project name="country-codes" path="." maven="true">
+			<!-- Maven default folder -->
+			<folder name="mainJava" path="cqrs-country-codes/java/src/main/java" create="false" override="false" clean="false" />
+			<folder name="mainRes" path="cqrs-country-codes/java/src/main/resources" create="false" override="false" clean="false" />
+			<folder name="genMainJava" path="cqrs-country-codes/java/src-gen/main/java" create="true" clean="true" cleanExclude="\..*" />
+			<folder name="genMainRes" path="cqrs-country-codes/java/src-gen/main/resources" create="true" clean="true" />
+			<folder name="testJava" path="cqrs-country-codes/java/src/test/java" create="false" override="false" clean="false" />
+			<folder name="testRes" path="cqrs-country-codes/java/src/test/resources" create="false" override="false" clean="false" />
+			<folder name="genTestJava" path="cqrs-country-codes/java/src-gen/test/java" create="true" clean="true" />
+			<folder name="genTestRes" path="cqrs-country-codes/java/src-gen/test/resources" create="true" clean="true" />
+		</project>
+	</projects>
+
+	<parsers>
+		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
+			<config>
+				<xtext:xtext-parser-config modelPath="${modelPath}" modelExt="cqrs"
+										   setupClass="org.fuin.dsl.cqrs.CqrsDslStandaloneSetup" />
+			</config>
+		</parser>
+	</parsers>
+
+	<generators>
+
+		<generator name="countryCodesGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator"
+				   parser="cqrsParser" project="country-codes">
+			<config>
+				<emf:emf-generator-config>
+
+					<!-- Pseudo generator that only maps the external "types.cqrs" to Java types -->
+					<emf:artifact-factory artifact="ExternalTypes" class="org.fuin.dsl.ddd.gen.resourceset.CtxExternalTypes" />
+
+					<emf:artifact-factory artifact="valueObjectGen" class="org.fuin.dsl.ddd.gen.valueobject.CombinedValueObjectArtifactFactory" />
+					<emf:artifact-factory artifact="validatorAnnotation" class="org.fuin.dsl.ddd.gen.constr.ValidatorAnnotationArtifactFactory" />
+					<emf:artifact-factory artifact="validator" class="org.fuin.dsl.ddd.gen.constr.ValidatorArtifactFactory" />
+					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory" />
+					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory" />
+					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory" />
+
+				</emf:emf-generator-config>
+			</config>
+
+			<artifact name="valueObjectGen" project="country-codes" folder="genMainJava" />
+			<artifact name="validatorAnnotation" project="country-codes" folder="genMainJava" />
+			<artifact name="validator" project="country-codes" folder="mainJava" />
+			<artifact name="enum" project="country-codes" folder="genMainJava" />
+			<artifact name="exception" project="country-codes" folder="genMainJava" />
+			<artifact name="pkginfo" project="country-codes" folder="genMainJava" />
+
+		</generator>
+	</generators>
+
+</srcgen4j-config>

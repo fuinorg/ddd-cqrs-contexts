@@ -2,6 +2,7 @@ package org.fuin.dsl.cqrs.common.basics;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 import org.fuin.ddd4j.core.EntityIdPath;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ValueObject;
@@ -61,4 +62,24 @@ public abstract class AbstractVersionedEntityIdPath implements ValueObject, Seri
         return aggregateVersion;
     }
     
+    @Override
+    public final int hashCode() {
+        return Objects.hash(entityIdPath, aggregateVersion);
+    }
+    
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractVersionedEntityIdPath other = (AbstractVersionedEntityIdPath) obj;
+        return Objects.equals(entityIdPath, other.entityIdPath)
+            && Objects.equals(aggregateVersion, other.aggregateVersion);
+    }
 }

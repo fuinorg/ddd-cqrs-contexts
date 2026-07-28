@@ -3,6 +3,7 @@ package org.fuin.dsl.cqrs.common.basics;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ValueObject;
 
@@ -60,4 +61,24 @@ public abstract class AbstractComment implements ValueObject, Serializable {
         return value;
     }
     
+    @Override
+    public final int hashCode() {
+        return Objects.hash(mimeType, value);
+    }
+    
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractComment other = (AbstractComment) obj;
+        return Objects.equals(mimeType, other.mimeType)
+            && Objects.equals(value, other.value);
+    }
 }

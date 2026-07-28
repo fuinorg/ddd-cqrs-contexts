@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ValueObject;
 
@@ -47,4 +48,23 @@ public abstract class AbstractPostalAddress implements ValueObject, Serializable
         return lines;
     }
     
+    @Override
+    public final int hashCode() {
+        return Objects.hash(lines);
+    }
+    
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractPostalAddress other = (AbstractPostalAddress) obj;
+        return Objects.equals(lines, other.lines);
+    }
 }

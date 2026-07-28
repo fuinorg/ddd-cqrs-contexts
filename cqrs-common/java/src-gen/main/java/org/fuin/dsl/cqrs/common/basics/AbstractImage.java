@@ -2,6 +2,7 @@ package org.fuin.dsl.cqrs.common.basics;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ValueObject;
 
@@ -58,4 +59,24 @@ public abstract class AbstractImage implements ValueObject, Serializable {
         return data;
     }
     
+    @Override
+    public final int hashCode() {
+        return Objects.hash(pathAndName, data);
+    }
+    
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractImage other = (AbstractImage) obj;
+        return Objects.equals(pathAndName, other.pathAndName)
+            && Objects.equals(data, other.data);
+    }
 }

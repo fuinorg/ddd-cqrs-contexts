@@ -1,12 +1,11 @@
-project org.fuin.dsl.cqrs {
+context org.fuin.dsl.cqrs {
 
-	context common {
 	    
-	    namespace basics {
-	
-	        import org.fuin.dsl.cqrs.common.types.*
-	        import org.fuin.dsl.cqrs.common.constraints.*
+	    module common.basics {
+	    	import org.fuin.dsl.cqrs.common.constraints.*
+	    	import org.fuin.dsl.cqrs.common.types.*
 
+	
             /**
              * Marks a domain event that brings an entity or an aggregate into existence.method.
              */
@@ -238,6 +237,5 @@ project org.fuin.dsl.cqrs {
 
 	    }
 	    
-	}
 
 }

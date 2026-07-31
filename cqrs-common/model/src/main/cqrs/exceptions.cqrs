@@ -1,11 +1,10 @@
-project org.fuin.dsl.cqrs {
+context org.fuin.dsl.cqrs {
 
-	context common {
     
-	    namespace exceptions {
+	    module common.exceptions {
+	    	import org.fuin.dsl.cqrs.common.types.*
+
 	    
-	        import org.fuin.dsl.cqrs.common.types.*
-	
 	        /**
 	         * Expected the entity to be in state 'deleted', but was not.
 	         */
@@ -40,7 +39,6 @@ project org.fuin.dsl.cqrs {
 	
 	    }
 	    
-	}
 	
 }
 	

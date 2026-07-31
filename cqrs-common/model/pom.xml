@@ -13,33 +13,29 @@
     </parent>
 
     <artifactId>cqrs-common-model</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>cqrs-common-model</name>
     <description>The reusable "common" CQRS DSL context (types, basics, constraints, exceptions),
-        published as a tar.gz with the "cqrs" classifier</description>
+        published as an ordinary jar holding the '.cqrs' files under 'model/'</description>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>cqrs-tar-gz</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/cqrs.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+
+        <!--
+            The models are the artifact. They go into 'model/' so the DSL can tell them apart from
+            anything else the jar may carry, and the consuming editor or build reads them straight out
+            of the jar in the local repository - nothing is ever unpacked.
+        -->
+        <resources>
+            <resource>
+                <directory>src/main/cqrs</directory>
+                <targetPath>model</targetPath>
+                <includes>
+                    <include>**/*.cqrs</include>
+                </includes>
+            </resource>
+        </resources>
+
     </build>
 
 </project>

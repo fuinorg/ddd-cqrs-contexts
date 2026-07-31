@@ -1,11 +1,10 @@
-project org.fuin.dsl.cqrs {
+context org.fuin.dsl.cqrs {
 
-	context common {
     
 	    // Defines custom constraints
-		namespace constraints {
-		
+		module common.constraints {
 			import org.fuin.dsl.cqrs.common.types.*
+
 		
 			/** Makes sure a string is not empty. */
 			constraint NotEmpty input String {
@@ -235,6 +234,5 @@ project org.fuin.dsl.cqrs {
 			
 		}
 	
-	}
 	
 }

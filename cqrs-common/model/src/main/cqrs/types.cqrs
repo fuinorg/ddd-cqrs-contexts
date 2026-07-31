@@ -1,9 +1,8 @@
-project org.fuin.dsl.cqrs {
+context org.fuin.dsl.cqrs {
 
-	context common {
 
 	    // Defines basic types that will be mapped to Java types directly 
-	    namespace types {
+	    module common.types {
 	
 			/** 8-bit signed two's complement integer with a minimum value of -128 and a maximum value of 127 (inclusive). See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Byte.html">java.lang.Byte</a>. */
 			type Byte 
@@ -82,6 +81,5 @@ project org.fuin.dsl.cqrs {
 	
 	     }
 	
-	}
 
 }

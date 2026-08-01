@@ -1,8 +1,14 @@
 context org.fuin.dsl.cqrs {
 
-	/** A hint for the SrcGen4J code generation. */
+	/**
+	 * A hint for the SrcGen4J code generation. The two scripts decide where generated code goes:
+	 * "model2JavaPackage" names the Java package of a type, "artifact2Target" the Maven module and
+	 * folder its file is written to. Both ship inside the model jar, so a project depending on this
+	 * model resolves an imported type to the package it was really generated into.
+	 */
 	hint SrcGen4J {
-        "package": "${context}.${module}",
+        "model2JavaPackage": "scripts/model2JavaPackage.js",
+        "artifact2Target":   "scripts/artifact2Target.js",
         "constraintMappings": [
             "org.fuin.dsl.cqrs.common.constraints.NotEmpty=jakarta.validation.constraints.NotEmpty",
             "org.fuin.dsl.cqrs.common.constraints.Length(min,max)=jakarta.validation.constraints.Size(min=min,max=max)",

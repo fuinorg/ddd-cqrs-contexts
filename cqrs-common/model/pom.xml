@@ -32,6 +32,12 @@
                 <targetPath>model</targetPath>
                 <includes>
                     <include>**/*.cqrs</include>
+                    <!--
+                        The "SrcGen4J" hint points at these, and a consumer of this model runs them to
+                        find out which Java package an imported type was generated into. They only work
+                        if they travel with the models.
+                    -->
+                    <include>**/*.js</include>
                 </includes>
             </resource>
         </resources>

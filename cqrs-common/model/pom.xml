@@ -13,35 +13,45 @@
     </parent>
 
     <artifactId>cqrs-common-model</artifactId>
-    <packaging>jar</packaging>
+    <!--
+        The models are data, not code: nothing in this artifact ever belongs on a classpath, so it is a
+        plain zip rather than a jar. There is no packaging that builds one, hence 'pom' plus an assembly
+        - which is also why the models are read from 'src/main/model' by the descriptor instead of being
+        copied as resources, a phase the 'pom' lifecycle does not have.
+    -->
+    <packaging>pom</packaging>
 
     <name>cqrs-common-model</name>
     <description>The reusable "common" CQRS DSL context (types, basics, constraints, exceptions),
-        published as an ordinary jar holding the '.cqrs' files under 'model/'</description>
+        published as a plain zip holding the public '.cqrs' files under 'model/public/'</description>
 
     <build>
-
-        <!--
-            The models are the artifact. They go into 'model/' so the DSL can tell them apart from
-            anything else the jar may carry, and the consuming editor or build reads them straight out
-            of the jar in the local repository - nothing is ever unpacked.
-        -->
-        <resources>
-            <resource>
-                <directory>src/main/cqrs</directory>
-                <targetPath>model</targetPath>
-                <includes>
-                    <include>**/*.cqrs</include>
-                    <!--
-                        The "SrcGen4J" hint points at these, and a consumer of this model runs them to
-                        find out which Java package an imported type was generated into. They only work
-                        if they travel with the models.
-                    -->
-                    <include>**/*.js</include>
-                </includes>
-            </resource>
-        </resources>
-
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-model-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <!--
+                                Without this the assembly id would become a classifier. For a 'pom'
+                                project the plugin then attaches the zip as the artifact itself, with no
+                                classifier - which is what the DSL resolves.
+                            -->
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/main/assembly/model.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

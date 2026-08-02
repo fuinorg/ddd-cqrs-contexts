@@ -5,8 +5,12 @@
 
 	<variables>
 		<!-- The cqrs files of the "common" context, read straight from the sibling module
-		     (paths are relative to the reactor root where the build is executed) -->
-		<variable name="modelPath" value="cqrs-common/model/src/main/cqrs" />
+		     (paths are relative to the reactor root where the build is executed).
+
+		     This points at the parent of "public" and "private", not at either of them: the parser
+		     descends into both, so Java is generated for the whole model while only the public part is
+		     published. The ".js" files below it are skipped by the "cqrs" extension filter. -->
+		<variable name="modelPath" value="cqrs-common/model/src/main/model" />
 		<variable name="copyrightHeader" value="" />
 		<variable name="jpa" value="false" />
 		<variable name="jaxb" value="false" />

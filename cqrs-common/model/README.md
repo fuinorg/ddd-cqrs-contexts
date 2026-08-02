@@ -7,8 +7,9 @@ Part of [cqrs-common](../README.md) (in [ddd-cqrs-contexts](../../README.md)).
 
 ## Contents
 
-The model is written in the fuin.org DDD/CQRS DSL under
-[`src/main/cqrs`](src/main/cqrs), split into modules of the `common` context:
+The model is written in the fuin.org DDD/CQRS DSL under [`src/main/model`](src/main/model), split into
+a [`public`](src/main/model/public) and a [`private`](src/main/model/private) part. Only the public one
+is published; everything below is public today:
 
 | File | Module | What it defines |
 | ---- | ------ | --------------- |
@@ -19,25 +20,39 @@ The model is written in the fuin.org DDD/CQRS DSL under
 
 ## Packaging
 
-The models *are* the artifact. `src/main/cqrs` is packaged as a resource under `model/`, so ordinary
-`jar` packaging produces:
+The models *are* the artifact, and they are data - nothing in here ever belongs on a classpath, so it
+is published as a plain **zip** rather than a jar. `src/main/model/public` is copied by
+[an assembly](src/main/assembly/model.xml) keeping its folder:
 
 ```
-cqrs-common-model-<version>.jar
-    model/types.cqrs
-    model/basics.cqrs
+cqrs-common-model-<version>.zip
+    model/public/types.cqrs
+    model/public/basics.cqrs
     ...
+    model/public/model2JavaPackage.js
 ```
 
-No classifier and no assembly: a consumer simply depends on
-`org.fuin.dsl.cqrs.contexts:cqrs-common-model:<version>`. The `model/` folder keeps the models apart
-from anything else the jar carries, and a consuming editor or build reads them **straight out of this
-jar in the local repository** - nothing is ever unpacked. The Java generated from the model lives in
-the sibling module [`cqrs-common-java`](../java/README.md).
+`src/main/model/private` is not named there and so cannot leak. There is no classifier: a consumer
+simply resolves `org.fuin.dsl.cqrs.contexts:cqrs-common-model:<version>` with type `zip`. The `model/`
+folder keeps the models apart from anything else the archive may carry, and a consuming editor or
+build reads them **straight out of this zip in the local repository** - nothing is ever unpacked. The
+Java generated from the model - from *both* parts - lives in the sibling module
+[`cqrs-common-java`](../java/README.md).
+
+### The two scripts
+
+`aaa.cqrs` declares a `SrcGen4J` hint naming two JavaScript files. A script path is written from the
+enclosing `model` folder, so it names the part the script lies in and reads the same here and inside
+the zip:
+
+| Script | Where | Why |
+| ------ | ----- | --- |
+| `model2JavaPackage.js` | `public/` | A consumer runs *our* copy to resolve an imported type to the Java package it was really generated into, so it has to travel with the models. |
+| `artifact2Target.js` | `private/` | Names the Maven module a generated file goes to. That only means something to the project doing the generating, which always uses its own - so ours stays out of the zip. |
 
 ## Reusing this model in another DSL project
 
-Because the context is published as an ordinary Maven jar, other `.cqrs` models can reuse it by
+Because the context is published as a Maven artifact, other `.cqrs` models can reuse it by
 declaring it as a `dependency` on their `context` (where it applies to every module) or on a single
 `module`. The dependency makes the models resolvable; an `import` then decides
 which of their types are visible:
@@ -62,12 +77,11 @@ The dependency makes every module this artifact declares - `types`, `basics`, `c
 `exceptions` - resolvable, with no external catalog file; each `import` above then picks what is
 actually visible. A whole context can be pulled in at once with `import org.fuin.dsl.cqrs.*`. The
 artifact is resolved from the local `~/.m2/repository` first, otherwise from Maven Central or the
-snapshot repository, and unpacked once into a `.dependencies-cache` directory next to the model that
-declares it.
+snapshot repository, and read in place - nothing is unpacked.
 
 While developing an unpublished change to this model, add a `local` clause to read the `.cqrs` files
-straight from this directory instead of resolving the artifact:
+straight from the public folder instead of resolving the artifact:
 
 ```
-dependency "org.fuin.dsl.cqrs.contexts:cqrs-common-model:0.1.0-SNAPSHOT" local "../ddd-cqrs-contexts/cqrs-common/model/src/main/cqrs"
+dependency "org.fuin.dsl.cqrs.contexts:cqrs-common-model:0.1.0-SNAPSHOT" local "../ddd-cqrs-contexts/cqrs-common/model/src/main/model/public"
 ```

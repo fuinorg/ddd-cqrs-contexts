@@ -24,7 +24,7 @@ This is a Maven multi-module build. The **"common"** context is grouped under th
 
 | Module | Description |
 | ------ | ----------- |
-| [`cqrs-common-model`](cqrs-common/model/README.md) | The reusable **"common"** CQRS DSL context — the `.cqrs` source files (types, basics, constraints, exceptions). Packaged and published as a `tar.gz` (classifier `cqrs`) so other projects can reuse the model. |
+| [`cqrs-common-model`](cqrs-common/model/README.md) | The reusable **"common"** CQRS DSL context — the `.cqrs` source files (types, basics, constraints, exceptions). Its public part is published as a plain `zip` (no classifier) so other projects can reuse the model. |
 | [`cqrs-common-java`](cqrs-common/java/README.md) | The **Java code generated** from the "common" context, plus hand-written validators and tests. Built into a normal JAR for use as a dependency. |
 
 See each module's own README for details.

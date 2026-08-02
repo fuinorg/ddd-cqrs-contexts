@@ -3,12 +3,17 @@ context org.fuin.dsl.cqrs {
 	/**
 	 * A hint for the SrcGen4J code generation. The two scripts decide where generated code goes:
 	 * "model2JavaPackage" names the Java package of a type, "artifact2Target" the Maven module and
-	 * folder its file is written to. Both ship inside the model jar, so a project depending on this
-	 * model resolves an imported type to the package it was really generated into.
+	 * folder its file is written to.
+	 *
+	 * A path is written from the enclosing "model" folder, so it names the part it lies in and reads
+	 * the same here and inside the published zip. Only "model2JavaPackage" is public: a project
+	 * depending on this model runs it to resolve an imported type to the package it was really
+	 * generated into. "artifact2Target" is private and stays out of the zip - a module name only means
+	 * something to the project doing the generating, so a consumer never reads ours.
 	 */
 	hint SrcGen4J {
-        "model2JavaPackage": "scripts/model2JavaPackage.js",
-        "artifact2Target":   "scripts/artifact2Target.js",
+        "model2JavaPackage": "public/model2JavaPackage.js",
+        "artifact2Target":   "private/artifact2Target.js",
         "constraintMappings": [
             "org.fuin.dsl.cqrs.common.constraints.NotEmpty=jakarta.validation.constraints.NotEmpty",
             "org.fuin.dsl.cqrs.common.constraints.Length(min,max)=jakarta.validation.constraints.Size(min=min,max=max)",

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0 http://maven.apache.org/xsd/assembly-2.2.0.xsd">
+
+    <!-- Never appears in the file name: the pom sets 'appendAssemblyId' to false -->
+    <id>model</id>
+
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <!-- Without this everything would end up below a 'cqrs-common-model-<version>/' folder -->
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <!--
+            Only the public part is published, and it keeps its folder: a consumer sees 'model/public'
+            exactly as this project does, so the script path a model writes reads the same in both.
+            'src/main/model/private' is not named here and therefore cannot leak.
+        -->
+        <fileSet>
+            <directory>src/main/model/public</directory>
+            <outputDirectory>model/public</outputDirectory>
+            <includes>
+                <include>**/*.cqrs</include>
+                <!--
+                    The "model2JavaPackage" script travels with the models: a consumer runs it to find
+                    out which Java package an imported type was generated into.
+                -->
+                <include>**/*.js</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

@@ -1,0 +1,35 @@
+context org.fuin.dsl.cqrs {
+
+	    module common.rules {
+	    	import org.fuin.dsl.cqrs.common.exceptions.*
+
+	        /**
+	         * Makes sure the entity was not (soft) deleted yet.
+	         * <p>
+	         * Deleting an aggregate records a fact; it does not remove the aggregate or its stream, and it
+	         * must not - a stream deleted while a projection is still catching up takes the deletion event
+	         * with it, leaving the read model serving something that no longer exists. A deleted aggregate
+	         * therefore stays perfectly loadable, and refusing further operations is its own job.
+	         * <p>
+	         * Carry it on every operation of an aggregate that has a soft delete. Strong, because it is
+	         * decided from state the aggregate itself holds - no read model is consulted, so there is
+	         * nothing to lag behind.
+	         */
+	        business-rule EntityMustNotBeDeletedRule exception EntityInStateDeletedException {
+	            consistency strong
+	        }
+
+	        /**
+	         * Makes sure the entity was already (soft) deleted.
+	         * <p>
+	         * The counterpart of {@code EntityMustNotBeDeletedRule}, for the operation that reverts a
+	         * delete: undeleting something that was never deleted is not a no-op worth hiding, it means the
+	         * caller believes in a state the aggregate is not in.
+	         */
+	        business-rule EntityMustBeDeletedRule exception EntityNotInStateDeletedException {
+	            consistency strong
+	        }
+
+	    }
+
+}

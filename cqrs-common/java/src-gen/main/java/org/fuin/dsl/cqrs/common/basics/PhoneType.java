@@ -29,14 +29,14 @@ public enum PhoneType {
     
     ;
     
-    private Integer value;
+    private int value;
     
     /**
      * Returns: 32-bit signed two's complement integer, which has a minimum value of -231 and a maximum value of 231-1. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">java.lang.Integer</a>.
      *
      * @return Current value.
      */
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
     
@@ -54,7 +54,7 @@ public enum PhoneType {
     public static final List<PhoneType> DEPRECATED = List.of(
     );
     
-    private PhoneType(final Integer value) {
+    private PhoneType(final int value) {
         Contract.requireArgNotNull("value", value);
         
         this.value = value;

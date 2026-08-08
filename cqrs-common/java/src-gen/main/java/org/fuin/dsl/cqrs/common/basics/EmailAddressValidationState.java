@@ -15,14 +15,14 @@ public enum EmailAddressValidationState {
     
     ;
     
-    private Integer value;
+    private int value;
     
     /**
      * Returns: 32-bit signed two's complement integer, which has a minimum value of -231 and a maximum value of 231-1. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">java.lang.Integer</a>.
      *
      * @return Current value.
      */
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
     
@@ -55,7 +55,7 @@ public enum EmailAddressValidationState {
             return true;
         }
         for (final EmailAddressValidationState v : ALL) {
-            if (v.getValue().equals(value)) {
+            if (value.equals(v.getValue())) {
                 return true;
             }
         }
@@ -77,14 +77,14 @@ public enum EmailAddressValidationState {
             return null;
         }
         for (final EmailAddressValidationState v : ALL) {
-            if (v.getValue().equals(value)) {
+            if (value.equals(v.getValue())) {
                 return v;
             }
         }
         throw new IllegalArgumentException("Unknown value: " + value);
     }
     
-    private EmailAddressValidationState(final Integer value) {
+    private EmailAddressValidationState(final int value) {
         Contract.requireArgNotNull("value", value);
         
         this.value = value;

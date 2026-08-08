@@ -19,6 +19,13 @@ context org.fuin.dsl.cqrs {
             }
 
             /**
+             * Marks a domain event that recalls an entity from exile - the counterpart of ExileEvent.
+             * An ExodusEvent removes an entity for good, so nothing ever returns from one.
+             */
+            annotation ReturnFromExileEvent {
+            }
+
+            /**
              * Marks a domain event that hard-deletes an entity.
              */
             annotation ExodusEvent {

@@ -34,6 +34,10 @@
         <objects4j.version>0.12.0-SNAPSHOT</objects4j.version>
         <ddd4j.version>0.8.0-SNAPSHOT</ddd4j.version>
 
+        <!-- Index of this context's types, shipped in the jar so consumers can discover its value
+             objects instead of registering them by hand -->
+        <jandex.version>3.2.7</jandex.version>
+
         <!-- Compile-time null-safety (JSpecify + NullAway via Error Prone) -->
         <jspecify.version>1.0.0</jspecify.version>
         <error-prone.version>2.50.0</error-prone.version>

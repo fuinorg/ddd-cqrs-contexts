@@ -145,6 +145,26 @@
                 </executions>
             </plugin>
 
+            <!-- Ships a Jandex index in the jar, so a consuming application can discover the value
+                 objects of this context by scanning rather than registering them one by one.
+                 Without it a single-value value object from here - an EmailAddress, say - has no
+                 JSON serializer registered in the consumer and falls back to bean serialization:
+                 it goes on the wire as {"value":"a@b.c","baseType":"java.lang.String"} instead of
+                 "a@b.c", and the receiving side rejects it. -->
+            <plugin>
+                <groupId>io.smallrye</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+                <version>${jandex.version}</version>
+                <executions>
+                    <execution>
+                        <id>make-index</id>
+                        <goals>
+                            <goal>jandex</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

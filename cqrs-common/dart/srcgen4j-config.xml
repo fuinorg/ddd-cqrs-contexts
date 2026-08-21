@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srcgen4j-config xmlns="http://www.fuin.org/srcgen4j/commons/0.5.0"
+	xmlns:xtext="http://www.fuin.org/srcgen4j/core/xtext/0.5.0"
+	xmlns:emf="http://www.fuin.org/srcgen4j/core/emf/0.5.0">
+
+	<variables>
+		<!-- Same model the Java half reads; paths are relative to the reactor root. -->
+		<variable name="modelPath" value="cqrs-common/model/src/main/model" />
+		<variable name="copyrightHeader" value="" />
+	</variables>
+
+	<modules>
+		<!-- The Dart package itself. Generated code is committed: a consumer takes this straight from
+		     git, and pub runs no build step on a dependency. -->
+		<module name="dart" path="cqrs-common/dart">
+			<folder name="genMainDart" path="lib/src-gen" create="true" override="true"/>
+		</module>
+	</modules>
+
+	<parsers>
+		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
+			<config>
+				<xtext:xtext-parser-config modelPath="${modelPath}" modelExt="cqrs"
+										   setupClass="org.fuin.dsl.cqrs.CqrsDslStandaloneSetup" />
+			</config>
+		</parser>
+	</parsers>
+
+	<generators>
+
+		<generator name="dartGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator" parser="cqrsParser">
+			<config>
+				<emf:emf-generator-config>
+
+					<variable name="dartPackage" value="cqrs_common" />
+
+					<emf:artifact-factory artifact="dartId" class="org.fuin.dsl.ddd.flutter.entityid.DartIdArtifactFactory" />
+					<emf:artifact-factory artifact="dartEnum" class="org.fuin.dsl.ddd.flutter.enumobject.DartEnumArtifactFactory" />
+					<emf:artifact-factory artifact="dartValueObject" class="org.fuin.dsl.ddd.flutter.valueobject.DartValueObjectArtifactFactory" />
+					<emf:artifact-factory artifact="dartRow" class="org.fuin.dsl.ddd.flutter.valueobject.DartRowArtifactFactory" />
+
+					<!-- The barrel. Module and folder are named here because a catalogue belongs to no
+					     single model element, so the target script has nothing to look at. -->
+					<emf:artifact-factory artifact="dartLibrary" class="org.fuin.dsl.ddd.flutter.resourceset.DartLibraryArtifactFactory" module="dart" folder="genMainDart" />
+
+				</emf:emf-generator-config>
+			</config>
+		</generator>
+	</generators>
+
+</srcgen4j-config>

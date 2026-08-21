@@ -1,0 +1,16 @@
+name: cqrs_common
+description: Dart contract generated from the "common" CQRS DSL context, with the runtime it speaks.
+version: 0.1.0
+publish_to: 'none'
+
+# Pure Dart on purpose: nothing here draws a widget, so it builds and tests without a widget tester.
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  decimal: ^3.2.4
+  meta: ^1.16.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.26.2

@@ -1,0 +1,3 @@
+# Resolved by each consumer, not pinned here: this is a library, not an application.
+pubspec.lock
+.dart_tool/

@@ -2,12 +2,18 @@
  * Target mapping of the "cqrs-common" model. Everything it declares is a plain reusable type, so it all
  * goes into the one module the generating project declares; the folder rules are the templates' own.
  *
+ * The Dart target is asked first, because its type keys say outright which target they belong to and
+ * the Java folder rules below have nothing to say about them.
+ *
  *   folder: four rules on the factory, first match wins
  *     1. "*TestArtifactFactory"          -> testJava     (a test class)
  *     2. the two non-Java factories      -> genMainRes   (documentation, Liquibase XML)
  *     3. "Final*" and the leaf factories -> mainJava     (developer owned, written once)
  *     4. everything else                 -> genMainJava  (derived, rewritten every run)
  */
+
+var DART_MODULE = 'dart';
+var GEN_MAIN_DART = 'genMainDart';
 
 var MAIN_JAVA = 'mainJava';
 var GEN_MAIN_JAVA = 'genMainJava';
@@ -33,6 +39,9 @@ var MAIN_JAVA_ARTIFACTS = [
 ];
 
 function artifact2Target(element, typeKey, artifactFactory) {
+    if (typeKey !== null && typeKey !== undefined && typeKey.indexOf('dart-') === 0) {
+        return { module: DART_MODULE, folder: GEN_MAIN_DART };
+    }
     return { module: module(typeKey), folder: folder(artifactFactory) };
 }
 

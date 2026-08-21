@@ -1,0 +1,6 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  errors:
+    # Generated code is regenerated, not edited, so a lint here is a template change or nothing.
+    directives_ordering: warning

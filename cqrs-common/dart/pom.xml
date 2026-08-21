@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.fuin.dsl.cqrs.contexts</groupId>
+        <artifactId>cqrs-common</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>cqrs-common-dart</artifactId>
+    <!-- Nothing is compiled or installed here: the deliverable is the Dart package in this directory,
+         taken from git by its consumers. Maven only runs the generator. -->
+    <packaging>pom</packaging>
+
+    <name>cqrs-common-dart</name>
+    <description>Dart code generated from the "common" CQRS DSL context</description>
+
+    <build>
+        <plugins>
+
+            <!-- Generate the Dart code from the "common" cqrs model (read from ../model) -->
+            <plugin>
+                <groupId>org.fuin.srcgen4j</groupId>
+                <artifactId>srcgen4j-maven-plugin</artifactId>
+                <configuration>
+                    <jaxbClasses>
+                        <jaxbClass>org.fuin.srcgen4j.core.xtext.XtextParserConfig</jaxbClass>
+                        <jaxbClass>org.fuin.srcgen4j.core.emf.EMFGeneratorConfig</jaxbClass>
+                    </jaxbClasses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>srcgen4j</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>process-template</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.fuin.dsl.ddd</groupId>
+                        <artifactId>ddd-templates</artifactId>
+                        <version>${ddd-templates.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

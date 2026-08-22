@@ -14,28 +14,22 @@ enum CommandKind {
   remove,
 }
 
-/// Where the `entity-id-path` of a command comes from.
+/// Where the `entity-id-path` of a command comes from. Getting it wrong addresses the write at the
+/// wrong aggregate.
 ///
-/// A screen cannot work this out from the rest of the descriptor, and the four cases ask four different
-/// things of it. Getting it wrong does not draw badly - it addresses the write at the wrong aggregate.
-///
-/// **One case the model cannot state**: an aggregate there is only ever one of looks exactly like an
-/// ordinary one, so its constructor arrives here as [clientGenerated]. A screen must therefore offer a
-/// create only where [CommandDescriptor.targetType] matches the rows it is showing, rather than
-/// trusting this alone.
+/// A singleton aggregate is indistinguishable from an ordinary one here and arrives as
+/// [clientGenerated], so a screen must also match [CommandDescriptor.targetType] against its rows.
 enum CommandTargetOrigin {
   /// The client mints a fresh identifier. A new aggregate root with a surrogate id.
   clientGenerated,
 
-  /// The parent's segment of the path of the row it is created under. A new child entity, whose own id
-  /// the write side assigns.
+  /// The parent's segment of the row's path - a new child entity, whose own id the write side assigns.
   parentOfRow,
 
   /// The path of the row being acted on, which is every ordinary change and removal.
   row,
 
-  /// The command's own attributes already determine it - a natural key. The client cannot compose one
-  /// without knowing an encoding that only the write side has.
+  /// A natural key, which the client cannot compose without an encoding only the write side has.
   derived,
 }
 
@@ -71,10 +65,8 @@ class CommandDescriptor {
   /// What it does to that aggregate.
   final CommandKind kind;
 
-  /// The wire type of what it addresses, e.g. `CATEGORY` - the entity's own name in upper snake case.
-  ///
-  /// Not recoverable from [target] or from an id class name: melkheftken has an `AccountTransactionId`
-  /// whose type is `TRANSACTION`. It is what matches a command against the rows a screen is showing.
+  /// The wire type it addresses, e.g. `CATEGORY`. Not recoverable from [target] - an
+  /// `AccountTransactionId` is a `TRANSACTION` - and it is what matches a command against rows.
   final String? targetType;
 
   /// Where the `entity-id-path` is supposed to come from.

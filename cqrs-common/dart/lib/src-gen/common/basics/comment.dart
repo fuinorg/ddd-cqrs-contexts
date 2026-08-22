@@ -24,6 +24,7 @@ class Comment {
       AttributeDescriptor(
         name: 'mimeType',
         kind: ValueKind.text,
+        modelType: 'MediaType',
         constraints: MediaType.constraints,
       ),
       AttributeDescriptor(

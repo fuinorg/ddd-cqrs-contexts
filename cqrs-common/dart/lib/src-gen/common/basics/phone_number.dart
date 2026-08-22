@@ -28,6 +28,7 @@ class PhoneNumber {
       AttributeDescriptor(
         name: 'typ',
         kind: ValueKind.enumeration,
+        modelType: 'PhoneType',
         values: PhoneType.descriptors,
       ),
       AttributeDescriptor(

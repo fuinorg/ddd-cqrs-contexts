@@ -225,3 +225,21 @@ List<Map<String, dynamic>> objectList(Object? body) {
   }
   throw FormatException('Expected a list of objects, got: ${body.runtimeType}');
 }
+
+/// Writes a calendar day the way the wire carries one: `2026-08-21`.
+///
+/// A `DateTime` cannot simply be handed over. A JSON encoder refuses it outright, and a query string
+/// renders it `2026-08-21 00:00:00.000`, which the server does not parse back - so both a command body
+/// and a view filter were wrong until this existed. The time of day is dropped rather than zeroed,
+/// because the model said a day and a day has no time in it.
+String? wireDate(DateTime? value) {
+  if (value == null) {
+    return null;
+  }
+  final month = value.month.toString().padLeft(2, '0');
+  final day = value.day.toString().padLeft(2, '0');
+  return '${value.year.toString().padLeft(4, '0')}-$month-$day';
+}
+
+/// Writes a point in time the way the wire carries one: ISO-8601.
+String? wireTimestamp(DateTime? value) => value?.toIso8601String();

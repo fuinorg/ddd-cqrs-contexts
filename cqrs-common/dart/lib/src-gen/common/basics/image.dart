@@ -24,6 +24,7 @@ class Image {
       AttributeDescriptor(
         name: 'pathAndName',
         kind: ValueKind.text,
+        modelType: 'FilePathAndName',
         constraints: FilePathAndName.constraints,
       ),
       AttributeDescriptor(

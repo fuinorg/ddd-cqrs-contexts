@@ -13,6 +13,7 @@ export 'src/descriptor/command_descriptor.dart';
 export 'src/descriptor/constraint.dart';
 export 'src/descriptor/model_text.dart';
 export 'src/descriptor/module_catalogue.dart';
+export 'src/descriptor/type_descriptor.dart';
 export 'src/descriptor/view_descriptor.dart';
 export 'src/json/json.dart';
 export 'src/transport.dart';

@@ -1,5 +1,10 @@
 import 'package:cqrs_common/src/descriptor/attribute_descriptor.dart';
 import 'package:cqrs_common/src/descriptor/model_text.dart';
+import 'package:cqrs_common/src/descriptor/type_descriptor.dart';
+
+// Re-exported so that everything naming a view's return type keeps finding it here, which is where it
+// used to live and where every generated row still imports it from.
+export 'package:cqrs_common/src/descriptor/type_descriptor.dart';
 
 /// What a view method returns, and therefore what shape of screen it is.
 enum MethodKind {
@@ -12,21 +17,6 @@ enum MethodKind {
 
   /// A single value. Never a screen - a badge, or a guard on a delete action.
   scalar,
-}
-
-/// The value object a view method returns, and the attributes it carries.
-class TypeDescriptor {
-  /// Constructor with all data.
-  const TypeDescriptor({required this.name, required this.attributes});
-
-  /// Name of the type in the model, e.g. `CategoryDetails`.
-  final String name;
-
-  /// Its attributes, in the order the model declares them - which is the order a screen shows them.
-  final List<AttributeDescriptor> attributes;
-
-  /// The attributes a screen shows, in model order.
-  Iterable<AttributeDescriptor> get displayed => attributes.where((a) => a.displayed);
 }
 
 /// One method of a view: a screen, a filter or a guard.

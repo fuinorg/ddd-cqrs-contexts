@@ -14,6 +14,31 @@ enum CommandKind {
   remove,
 }
 
+/// Where the `entity-id-path` of a command comes from.
+///
+/// A screen cannot work this out from the rest of the descriptor, and the four cases ask four different
+/// things of it. Getting it wrong does not draw badly - it addresses the write at the wrong aggregate.
+///
+/// **One case the model cannot state**: an aggregate there is only ever one of looks exactly like an
+/// ordinary one, so its constructor arrives here as [clientGenerated]. A screen must therefore offer a
+/// create only where [CommandDescriptor.targetType] matches the rows it is showing, rather than
+/// trusting this alone.
+enum CommandTargetOrigin {
+  /// The client mints a fresh identifier. A new aggregate root with a surrogate id.
+  clientGenerated,
+
+  /// The parent's segment of the path of the row it is created under. A new child entity, whose own id
+  /// the write side assigns.
+  parentOfRow,
+
+  /// The path of the row being acted on, which is every ordinary change and removal.
+  row,
+
+  /// The command's own attributes already determine it - a natural key. The client cannot compose one
+  /// without knowing an encoding that only the write side has.
+  derived,
+}
+
 /// One command: an action a user can take, and the form that collects what it needs.
 class CommandDescriptor {
   /// Constructor with all data.
@@ -22,6 +47,8 @@ class CommandDescriptor {
     required this.module,
     required this.target,
     required this.kind,
+    this.targetType,
+    this.targetOrigin = CommandTargetOrigin.row,
     required this.doc,
     required this.message,
     this.text,
@@ -43,6 +70,15 @@ class CommandDescriptor {
 
   /// What it does to that aggregate.
   final CommandKind kind;
+
+  /// The wire type of what it addresses, e.g. `CATEGORY` - the entity's own name in upper snake case.
+  ///
+  /// Not recoverable from [target] or from an id class name: melkheftken has an `AccountTransactionId`
+  /// whose type is `TRANSACTION`. It is what matches a command against the rows a screen is showing.
+  final String? targetType;
+
+  /// Where the `entity-id-path` is supposed to come from.
+  final CommandTargetOrigin targetOrigin;
 
   /// The model's documentation of the command.
   final String doc;

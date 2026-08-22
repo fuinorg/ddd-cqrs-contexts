@@ -1,5 +1,6 @@
 import 'package:cqrs_common/src/descriptor/constraint.dart';
 import 'package:cqrs_common/src/descriptor/model_text.dart';
+import 'package:cqrs_common/src/descriptor/type_descriptor.dart';
 
 /// What kind of value an attribute holds, as far as rendering and parsing are concerned.
 ///
@@ -42,7 +43,17 @@ enum AttributeRole {
   data,
 
   /// The identity of the row. Carried so a detail route and a command can be built, not displayed.
+  ///
+  /// A surrogate: an aggregate or entity id that means nothing to the person reading the screen.
   identifier,
+
+  /// The identity of the row, and the thing the user reads.
+  ///
+  /// A natural key - a module's name, an ISBN. It is what a command addresses and what a route is
+  /// built from, exactly like [identifier], and it is also a column, exactly like [data]. The type
+  /// cannot say which of the two an attribute is, because a natural key is an ordinary value object;
+  /// the model states it with `@Key`.
+  key,
 
   /// Where the row was projected from and which aggregate version it reflects.
   ///
@@ -76,6 +87,8 @@ class AttributeDescriptor {
     required this.kind,
     this.role = AttributeRole.data,
     this.text,
+    this.modelType,
+    this.nested,
     this.optional = false,
     this.multiple = false,
     this.constraints = const <Constraint>[],
@@ -91,8 +104,23 @@ class AttributeDescriptor {
   /// What it is for, which decides whether it is shown.
   final AttributeRole role;
 
-  /// What to call it on screen. Absent only where [role] is not [AttributeRole.data].
+  /// What to call it on screen. Absent only where the attribute is not [displayed].
   final ModelText? text;
+
+  /// The model's own name for what it holds - the element type for a list, the declared type
+  /// otherwise.
+  ///
+  /// What it is for: saying that two attributes are about the same thing when they are not called the
+  /// same thing. A rename command's `newName` and a row's `name` are both a `CategoryName`, and that
+  /// is the only statement in the model letting a form open with the value the row already holds.
+  final String? modelType;
+
+  /// The descriptor of the composite it holds, or `null` when it holds a value a cell can show.
+  ///
+  /// A composite value object - a person's name, a postal address - arrives as a JSON object, so a
+  /// cell handed one has nothing printable and would render the map. This is what gives a cell the
+  /// sub-attributes and their wording, and a form the fields to draw.
+  final TypeDescriptor? nested;
 
   /// Whether the model allows it to be absent.
   final bool optional;
@@ -111,7 +139,7 @@ class AttributeDescriptor {
   final List<EnumValueDescriptor> values;
 
   /// Whether a screen shows this attribute.
-  bool get displayed => role == AttributeRole.data;
+  bool get displayed => role == AttributeRole.data || role == AttributeRole.key;
 
   /// Returns the first constraint [value] violates, or `null` when it satisfies all of them.
   String? validate(Object? value) {

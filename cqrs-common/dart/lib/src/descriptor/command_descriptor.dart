@@ -81,10 +81,10 @@ class CommandDescriptor {
 
   /// What to call the action on screen.
   ///
-  /// **Null for every command today.** The DSL grammar lets a module, a view and a view method carry
-  /// `slabel`/`label`/`tooltip`, but a `command` carries only its documentation and its message - so
-  /// there is no wording in the model for a generator to emit here. Until that changes this stays
-  /// absent and a caller falls back to [doc]; when it changes, only the generator does.
+  /// Optional, because wording is optional in the model: a command that states none still has to
+  /// render, and a caller falls back to [doc] for it. It was null for every command until the grammar
+  /// gave `command` the `slabel`/`label`/`tooltip` block every other named element carries - before
+  /// that a menu entry could only show the sentence documenting the command.
   final ModelText? text;
 
   /// What the command needs, in model order.

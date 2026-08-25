@@ -3,16 +3,18 @@ import 'package:cqrs_common/src/descriptor/attribute_descriptor.dart';
 /// State of verification of an email address.
 enum EmailAddressValidationState {
   /// There was no proof yet that the email address exists.
-  notVerified('NOT_VERIFIED'),
+  notVerified('NOT_VERIFIED', 1),
 
   /// It was confirmed that the email addess exists.
-  verified('VERIFIED');
+  verified('VERIFIED', 2);
 
   /// Constructor with mandatory data.
-  const EmailAddressValidationState(this.wireName);
+  const EmailAddressValidationState(this.wireName, this.value);
 
   /// The instance as it appears on the wire.
   final String wireName;
+
+  final int value;
 
   /// All instances, in model order.
   static const List<EmailAddressValidationState> all = <EmailAddressValidationState>[notVerified, verified];
@@ -30,6 +32,16 @@ enum EmailAddressValidationState {
   /// every descriptor referencing it depend on whether somebody happened to write a label.
   static const List<EnumValueDescriptor> descriptors = <EnumValueDescriptor>[
   ];
+
+  /// Reads the attribute called [attribute] off this instance, for a caller that has only its
+  /// name - filling a command message's `${provider.id}` is the one that needs it.
+  ///
+  /// An operator rather than a method, matching what a generated row offers, and for the same
+  /// reason: a method needs a name and every name is one a model may give an attribute.
+  Object? operator [](String attribute) => switch (attribute) {
+        'value' => value,
+        _ => throw ArgumentError("EmailAddressValidationState has no attribute '$attribute'"),
+      };
 
   /// Reads an instance off its wire name.
   static EmailAddressValidationState fromWire(String wireName) => all.firstWhere(

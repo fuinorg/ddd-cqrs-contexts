@@ -31,21 +31,6 @@ context org.fuin.dsl.cqrs {
             annotation ExodusEvent {
             }
 
-            /**
-             * Names the attribute that identifies a read-model row, where the attribute's own type
-             * cannot say so.
-             *
-             * <p>An identifier is otherwise recognised by being an aggregate or entity id. That stops
-             * working twice over: a natural key - a module's name, an ISBN - is an ordinary value
-             * object whose type says nothing about the part it plays; and a row carrying a second id
-             * as a reference rather than as its identity has that id hidden from the screen, although
-             * the model gives it wording. Naming the key settles both, and every other id is then
-             * ordinary data.
-             */
-            annotation Key {
-                String value
-            }
-
 	        /**
 	         * Classification of the data related to the \"General Data Protection Regulation\" (GDPR).
 	         */

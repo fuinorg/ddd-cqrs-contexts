@@ -35,6 +35,8 @@ function model2JavaPackage(element, typeKey) {
         case 'java-aggregate-abstract':
         case 'java-entity':
         case 'java-entity-abstract':
+        case 'java-business-rule':
+        case 'java-business-rules':
         case 'java-package-info':
         case 'res-aggregate-doc':
         case 'res-aggregate-liquibase':

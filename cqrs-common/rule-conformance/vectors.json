@@ -1,0 +1,217 @@
+[
+  {
+    "name": "a bare Boolean attribute is the whole condition",
+    "rule": "MustBeEnabled",
+    "predicate": { "op": "attr", "attribute": "enabled" },
+    "cases": [
+      { "values": { "enabled": true }, "expected": true },
+      { "values": { "enabled": false }, "expected": false }
+    ]
+  },
+  {
+    "name": "negation of a bare Boolean",
+    "rule": "MustNotBeEnabled",
+    "predicate": { "op": "not", "expr": { "op": "attr", "attribute": "enabled" } },
+    "cases": [
+      { "values": { "enabled": false }, "expected": true },
+      { "values": { "enabled": true }, "expected": false }
+    ]
+  },
+  {
+    "name": "compared against absence",
+    "rule": "MustBeAssigned",
+    "predicate": {
+      "op": "compare",
+      "attribute": "assignedEntry",
+      "operator": "ne",
+      "right": { "kind": "null" }
+    },
+    "cases": [
+      { "values": { "assignedEntry": "JOURNAL_ENTRY 7" }, "expected": true },
+      { "values": { "assignedEntry": null }, "expected": false }
+    ]
+  },
+  {
+    "name": "compared against absence, the other way",
+    "rule": "MustNotBeAssigned",
+    "predicate": {
+      "op": "compare",
+      "attribute": "assignedEntry",
+      "operator": "eq",
+      "right": { "kind": "null" }
+    },
+    "cases": [
+      { "values": { "assignedEntry": null }, "expected": true },
+      { "values": { "assignedEntry": "JOURNAL_ENTRY 7" }, "expected": false }
+    ]
+  },
+  {
+    "name": "compared against a named value of an enumeration",
+    "rule": "MustBeIgnored",
+    "predicate": {
+      "op": "compare",
+      "attribute": "status",
+      "operator": "eq",
+      "right": { "kind": "value", "value": "IGNORED" }
+    },
+    "cases": [
+      { "values": { "status": "IGNORED" }, "expected": true },
+      { "values": { "status": "OPEN" }, "expected": false }
+    ]
+  },
+  {
+    "name": "compared against a named value of an enumeration, negated",
+    "rule": "MustNotBeIgnored",
+    "predicate": {
+      "op": "compare",
+      "attribute": "status",
+      "operator": "ne",
+      "right": { "kind": "value", "value": "IGNORED" }
+    },
+    "cases": [
+      { "values": { "status": "OPEN" }, "expected": true },
+      { "values": { "status": "IGNORED" }, "expected": false }
+    ]
+  },
+  {
+    "name": "two attributes of the rule compared with each other",
+    "rule": "CategoryTypeMustMatch",
+    "predicate": {
+      "op": "compare",
+      "attribute": "kind",
+      "operator": "eq",
+      "right": { "kind": "attribute", "name": "categoryKind" }
+    },
+    "cases": [
+      { "values": { "kind": "EXPENSE", "categoryKind": "EXPENSE" }, "expected": true },
+      { "values": { "kind": "EXPENSE", "categoryKind": "INCOME" }, "expected": false }
+    ]
+  },
+  {
+    "name": "two dates ordered",
+    "rule": "DueDateMustNotBeBeforeReceiptDate",
+    "predicate": {
+      "op": "compare",
+      "attribute": "dueDate",
+      "operator": "ge",
+      "right": { "kind": "attribute", "name": "receiptDate" }
+    },
+    "cases": [
+      { "values": { "dueDate": "2026-09-30", "receiptDate": "2026-08-21" }, "expected": true },
+      { "values": { "dueDate": "2026-08-21", "receiptDate": "2026-08-21" }, "expected": true },
+      { "values": { "dueDate": "2026-08-20", "receiptDate": "2026-08-21" }, "expected": false },
+      {
+        "comment": "across a year boundary, where a lexicographic order could plausibly disagree",
+        "values": { "dueDate": "2027-01-01", "receiptDate": "2026-12-31" },
+        "expected": true
+      },
+      {
+        "comment": "and across a month, where the zero padding is what makes it work",
+        "values": { "dueDate": "2026-09-01", "receiptDate": "2026-08-31" },
+        "expected": true
+      }
+    ]
+  },
+  {
+    "name": "a collection that must hold nothing",
+    "rule": "MustHaveNoLinks",
+    "predicate": { "op": "isEmpty", "attribute": "linkedEntries" },
+    "cases": [
+      { "values": { "linkedEntries": [] }, "expected": true },
+      { "values": { "linkedEntries": ["JOURNAL_ENTRY 7"] }, "expected": false }
+    ]
+  },
+  {
+    "name": "a collection that must hold something",
+    "rule": "MustHaveLinks",
+    "predicate": { "op": "not", "expr": { "op": "isEmpty", "attribute": "linkedEntries" } },
+    "cases": [
+      { "values": { "linkedEntries": ["JOURNAL_ENTRY 7"] }, "expected": true },
+      { "values": { "linkedEntries": [] }, "expected": false }
+    ]
+  },
+  {
+    "name": "a Boolean the caller was handed rather than one the rule went looking for",
+    "rule": "NameMustBeUniqueForType",
+    "predicate": { "op": "not", "expr": { "op": "attr", "attribute": "nameTaken" } },
+    "cases": [
+      { "values": { "nameTaken": false }, "expected": true },
+      { "values": { "nameTaken": true }, "expected": false }
+    ]
+  },
+  {
+    "name": "the one rule that needs parentheses",
+    "rule": "MustNotBeLinkedForFinancialChange",
+    "comment": "accountTransactionId == null || (date == newDate && sourceCurrency == newSourceCurrency)",
+    "predicate": {
+      "op": "or",
+      "left": {
+        "op": "compare",
+        "attribute": "accountTransactionId",
+        "operator": "eq",
+        "right": { "kind": "null" }
+      },
+      "right": {
+        "op": "and",
+        "left": {
+          "op": "compare",
+          "attribute": "date",
+          "operator": "eq",
+          "right": { "kind": "attribute", "name": "newDate" }
+        },
+        "right": {
+          "op": "compare",
+          "attribute": "sourceCurrency",
+          "operator": "eq",
+          "right": { "kind": "attribute", "name": "newSourceCurrency" }
+        }
+      }
+    },
+    "cases": [
+      {
+        "comment": "not linked, so the financial change is free",
+        "values": {
+          "accountTransactionId": null,
+          "date": "2026-08-21",
+          "newDate": "2026-09-01",
+          "sourceCurrency": "EUR",
+          "newSourceCurrency": "CHF"
+        },
+        "expected": true
+      },
+      {
+        "comment": "linked, and nothing financial changed",
+        "values": {
+          "accountTransactionId": "TRANSACTION 45",
+          "date": "2026-08-21",
+          "newDate": "2026-08-21",
+          "sourceCurrency": "EUR",
+          "newSourceCurrency": "EUR"
+        },
+        "expected": true
+      },
+      {
+        "comment": "linked, and the date moved",
+        "values": {
+          "accountTransactionId": "TRANSACTION 45",
+          "date": "2026-08-21",
+          "newDate": "2026-09-01",
+          "sourceCurrency": "EUR",
+          "newSourceCurrency": "EUR"
+        },
+        "expected": false
+      },
+      {
+        "comment": "linked, and the currency changed - the second half of the conjunction",
+        "values": {
+          "accountTransactionId": "TRANSACTION 45",
+          "date": "2026-08-21",
+          "newDate": "2026-08-21",
+          "sourceCurrency": "EUR",
+          "newSourceCurrency": "CHF"
+        },
+        "expected": false
+      }
+    ]
+  }
+]

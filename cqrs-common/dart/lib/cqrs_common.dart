@@ -17,5 +17,6 @@ export 'src/descriptor/module_catalogue.dart';
 export 'src/descriptor/type_descriptor.dart';
 export 'src/descriptor/view_descriptor.dart';
 export 'src/json/json.dart';
+export 'src/rules/rule_predicate.dart';
 export 'src/transport.dart';
 export 'src-gen/common.dart';

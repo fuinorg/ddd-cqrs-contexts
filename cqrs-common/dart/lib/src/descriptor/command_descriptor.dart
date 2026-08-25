@@ -1,5 +1,7 @@
 import 'package:cqrs_common/src/descriptor/attribute_descriptor.dart';
 import 'package:cqrs_common/src/descriptor/model_text.dart';
+import 'package:cqrs_common/src/rules/rule_descriptor.dart';
+import 'package:cqrs_common/src/rules/rule_predicate.dart';
 
 /// What a command does to the aggregate it targets, which decides how a screen offers it.
 enum CommandKind {
@@ -48,6 +50,7 @@ class CommandDescriptor {
     this.text,
     this.attributes = const <AttributeDescriptor>[],
     this.rejections = const <String, String>{},
+    this.rules = const <RuleDescriptor>[],
   });
 
   /// The command type, e.g. `CreateCategoryCommand`. This one string is three things at once: the last
@@ -112,6 +115,35 @@ class CommandDescriptor {
     return rejections[simple];
   }
 
+  /// The rules guarding this command that a client can answer for itself.
+  ///
+  /// **Advisory, and deliberately incomplete.** The server verifies every rule the model declares and
+  /// refuses with a typed exception; these are the subset whose values are on the client at all, so a
+  /// screen can avoid offering an action that is certain to be refused. A rule needing a parameter
+  /// nobody has typed yet, or an answer only the server can look up, is not here - and neither is any
+  /// rule when the row cannot supply what it reads.
+  ///
+  /// Empty means "nothing can be decided here", never "nothing guards this".
+  final List<RuleDescriptor> rules;
+
   /// Whether the action needs a form at all, or is a bare confirm.
   bool get needsForm => attributes.any((a) => a.displayed);
+
+  /// Whether any rule this client can answer says the command would be refused for [read]/[identity].
+  ///
+  /// Answers `false` when it cannot decide, which is what leaves the action offered: the server is
+  /// authoritative either way, and hiding something it would have allowed is indistinguishable from a
+  /// missing feature.
+  bool refusedFor(Object? Function(String) read, String? identity) {
+    for (final rule in rules) {
+      try {
+        if (!rule.holdsFor(read, identity)) {
+          return true;
+        }
+      } on RuleEvaluationException {
+        // Cannot say. Offer it and let the server answer.
+      }
+    }
+    return false;
+  }
 }

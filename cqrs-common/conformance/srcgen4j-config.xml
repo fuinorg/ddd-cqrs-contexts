@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srcgen4j-config xmlns="http://www.fuin.org/srcgen4j/commons/0.5.0"
+	xmlns:xtext="http://www.fuin.org/srcgen4j/core/xtext/0.5.0"
+	xmlns:emf="http://www.fuin.org/srcgen4j/core/emf/0.5.0">
+
+	<variables>
+		<!-- The fixture model, read from this module itself. Paths are relative to the reactor root
+		     where the build is executed, as in the sibling "java" module. -->
+		<variable name="modelPath" value="cqrs-common/conformance/src/main/model" />
+		<variable name="copyrightHeader" value="" />
+		<variable name="jpa" value="false" />
+		<variable name="jaxb" value="false" />
+		<variable name="jaxb_elements" value="false" />
+		<variable name="jsonb" value="false" />
+		<variable name="jackson" value="false" />
+	</variables>
+
+	<modules>
+		<module name="shared" path="cqrs-common/conformance" maven="true" />
+	</modules>
+
+	<parsers>
+		<parser name="cqrsParser" class="org.fuin.srcgen4j.core.xtext.XtextParser">
+			<config>
+				<xtext:xtext-parser-config modelPath="${modelPath}" modelExt="cqrs"
+										   setupClass="org.fuin.dsl.cqrs.CqrsDslStandaloneSetup" />
+			</config>
+		</parser>
+	</parsers>
+
+	<generators>
+
+		<generator name="conformanceGenerator" class="org.fuin.srcgen4j.core.emf.EMFGenerator" parser="cqrsParser">
+			<config>
+				<emf:emf-generator-config>
+
+					<!-- Only what a business rule needs: the external type mapping, the enumerations it
+					     compares against, its refusal, and the rule classes themselves. -->
+					<emf:artifact-factory artifact="ExternalTypes" class="org.fuin.dsl.ddd.gen.resourceset.CtxExternalTypes" />
+					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory" />
+					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory" />
+					<emf:artifact-factory artifact="businessRule" class="org.fuin.dsl.ddd.gen.rule.BusinessRuleArtifactFactory" />
+					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory" />
+
+				</emf:emf-generator-config>
+			</config>
+
+		</generator>
+	</generators>
+
+</srcgen4j-config>

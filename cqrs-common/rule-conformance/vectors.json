@@ -75,16 +75,16 @@
   },
   {
     "name": "two attributes of the rule compared with each other",
-    "rule": "CategoryTypeMustMatch",
+    "rule": "EditMustNotConflictWithAssignment",
     "predicate": {
       "op": "compare",
-      "attribute": "kind",
+      "attribute": "categoryKind",
       "operator": "eq",
-      "right": { "kind": "attribute", "name": "categoryKind" }
+      "right": { "kind": "attribute", "name": "newCategoryKind" }
     },
     "cases": [
-      { "values": { "kind": "EXPENSE", "categoryKind": "EXPENSE" }, "expected": true },
-      { "values": { "kind": "EXPENSE", "categoryKind": "INCOME" }, "expected": false }
+      { "values": { "categoryKind": "EXPENSE", "newCategoryKind": "EXPENSE" }, "expected": true },
+      { "values": { "categoryKind": "EXPENSE", "newCategoryKind": "INCOME" }, "expected": false }
     ]
   },
   {

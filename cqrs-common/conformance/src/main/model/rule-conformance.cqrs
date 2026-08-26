@@ -1,0 +1,178 @@
+/*
+ * The shared business-rule conformance vectors, as a model.
+ *
+ * One predicate is answered twice: by a generated Java rule class on the server, and by the Dart
+ * evaluator on the client. Two implementations of one semantics drift, and the way that drift shows up
+ * is a button that quietly stops being offered - no error, no failing build, nothing to notice.
+ *
+ * "../rule-conformance/vectors.json" is the table both ends answer, and the Dart half has always run
+ * it. This is the Java half: one rule per vector, named after it, declaring the same attributes and the
+ * same condition. The classes the generator produces from this are then driven from that very file, so
+ * what is compared is the generator's own output rather than a description of it.
+ *
+ * Everything here is a fixture, which is why it is a context of its own rather than part of the
+ * published "common" one. The attributes are plain types on purpose: a value read out of the vectors is
+ * handed straight to the constructor, so the test has no conversion of its own to get wrong.
+ */
+context org.fuin.dsl.cqrs.conformance {
+
+    dependency "org.fuin.dsl.cqrs.contexts:cqrs-common-model:0.1.0-SNAPSHOT"
+
+    /*
+     * Where the generated code goes. Without this the preset shipped with ddd-templates decides, and it
+     * sends a rule class to a "command.core" module that this build does not have - there is one target
+     * here, and everything belongs in it.
+     */
+    hint SrcGen4J {
+        "model2JavaPackage": "model2JavaPackage.js",
+        "artifact2Target":   "artifact2Target.js"
+    }
+
+    module rules {
+
+        import org.fuin.dsl.cqrs.common.types.*
+
+        /** Refused. Which rule refused is what the test asserts; the wording plays no part. */
+        exception ConformanceException {
+            message "The rule does not hold"
+        }
+
+        /** Stands in for every enumeration a vector compares against by name. */
+        enum Status {
+            instances {
+                /** Not reconciled yet. */
+                OPEN
+                /** Deliberately skipped. */
+                IGNORED
+            }
+        }
+
+        /** The side of the ledger something falls on. */
+        enum Kind {
+            instances {
+                /** Money in. */
+                INCOME
+                /** Money out. */
+                EXPENSE
+            }
+        }
+
+        /** A bare Boolean attribute is the whole condition. */
+        business-rule MustBeEnabled exception ConformanceException {
+            /** Whether this installation offers the module. */
+            Boolean enabled
+            consistency strong
+            requires enabled
+        }
+
+        /** Negation of a bare Boolean. */
+        business-rule MustNotBeEnabled exception ConformanceException {
+            /** Whether this installation offers the module. */
+            Boolean enabled
+            consistency strong
+            requires !enabled
+        }
+
+        /** Compared against absence. */
+        business-rule MustBeAssigned exception ConformanceException {
+            /** The journal entry this receipt backs, if any. */
+            optional String assignedEntry
+            consistency strong
+            requires assignedEntry != null
+        }
+
+        /** Compared against absence, the other way. */
+        business-rule MustNotBeAssigned exception ConformanceException {
+            /** The journal entry this receipt backs, if any. */
+            optional String assignedEntry
+            consistency strong
+            requires assignedEntry == null
+        }
+
+        /** Compared against a named value of an enumeration. */
+        business-rule MustBeIgnored exception ConformanceException {
+            /** How far the transaction got. */
+            Status status
+            consistency strong
+            requires status == IGNORED
+        }
+
+        /** The same, negated. */
+        business-rule MustNotBeIgnored exception ConformanceException {
+            /** How far the transaction got. */
+            Status status
+            consistency strong
+            requires status != IGNORED
+        }
+
+        /** One attribute compared against another of the same type. */
+        business-rule EditMustNotConflictWithAssignment exception ConformanceException {
+            /** The category type it carries now. */
+            Kind categoryKind
+            /** The category type the edit would give it. */
+            Kind newCategoryKind
+            consistency strong
+            requires categoryKind == newCategoryKind
+        }
+
+        /** Ordering two dates. */
+        business-rule DueDateMustNotBeBeforeReceiptDate exception ConformanceException {
+            /** When payment is due. */
+            Date dueDate
+            /** When the document was issued. */
+            Date receiptDate
+            consistency strong
+            requires dueDate >= receiptDate
+        }
+
+        /** The one built-in question about a collection. */
+        business-rule MustHaveNoLinks exception ConformanceException {
+            /** The journal entries linked to it. */
+            List<String> linkedEntries
+            consistency strong
+            requires linkedEntries.is-empty()
+        }
+
+        /** The same, negated. */
+        business-rule MustHaveLinks exception ConformanceException {
+            /** The journal entries linked to it. */
+            List<String> linkedEntries
+            consistency strong
+            requires !linkedEntries.is-empty()
+        }
+
+        /** A Boolean the caller looked up. */
+        business-rule NameMustBeUniqueForType exception ConformanceException {
+            /** Whether the name is already in use. */
+            Boolean nameTaken
+            consistency strong
+            requires !nameTaken
+        }
+
+        /** The one rule needing parentheses: a disjunction over a conjunction. */
+        business-rule MustNotBeLinkedForFinancialChange exception ConformanceException {
+            /** The bank transaction this entry reconciles, if any. */
+            optional String accountTransactionId
+            /** The date it carries now. */
+            Date date
+            /** The date the edit would give it. */
+            Date newDate
+            /** The source currency it carries now. */
+            String sourceCurrency
+            /** The source currency the edit would give it. */
+            String newSourceCurrency
+            consistency strong
+            requires accountTransactionId == null || (date == newDate && sourceCurrency == newSourceCurrency)
+        }
+
+        /** Compared against a value written out in the condition. */
+        business-rule MustNotBeReferenced exception ConformanceException {
+            /** How many records still reference it. */
+            Integer referenceCount
+            consistency strong
+            requires referenceCount == 0
+        }
+
+    }
+
+}

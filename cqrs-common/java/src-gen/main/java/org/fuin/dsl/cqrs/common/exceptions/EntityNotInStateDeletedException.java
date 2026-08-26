@@ -3,15 +3,15 @@ package org.fuin.dsl.cqrs.common.exceptions;
 import java.io.Serial;
 import java.util.Objects;
 import org.fuin.ddd4j.core.EntityIdPath;
+import org.fuin.dsl.cqrs.common.rules.UniquelyNumberedBusinessRuleViolationException;
 import org.fuin.objects4j.common.Contract;
-import org.fuin.objects4j.common.UniquelyNumberedException;
 import org.fuin.objects4j.core.KeyValue;
 import org.fuin.objects4j.core.KeyValueEL;
 
 /**
  * Expected the entity to be in state 'deleted', but was not.
  */
-public final class EntityNotInStateDeletedException extends UniquelyNumberedException {
+public final class EntityNotInStateDeletedException extends UniquelyNumberedBusinessRuleViolationException {
 
     @Serial
     private static final long serialVersionUID = 1000L;

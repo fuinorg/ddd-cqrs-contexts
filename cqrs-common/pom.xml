@@ -22,6 +22,7 @@
         <module>model</module>
         <module>java</module>
         <module>dart</module>
+        <module>conformance</module>
     </modules>
 
 </project>

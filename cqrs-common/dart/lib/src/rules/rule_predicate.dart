@@ -50,6 +50,8 @@ sealed class RulePredicate {
             final Map<String, dynamic> r when r['kind'] == 'null' => const RuleNullOperand(),
             final Map<String, dynamic> r when r['kind'] == 'attribute' =>
               RuleAttributeOperand(r['name'] as String),
+            final Map<String, dynamic> r when r['kind'] == 'literal' =>
+              RuleLiteralOperand(r['value']),
             final Map<String, dynamic> r => RuleValueOperand(r['value'] as String),
             _ => throw RuleEvaluationException('unreadable right operand'),
           },
@@ -152,7 +154,8 @@ enum CompareOp {
   ge,
 }
 
-/// The right hand side of a comparison: another attribute, a named value of an enumeration, or null.
+/// The right hand side of a comparison: another attribute, a named value of an enumeration, a value
+/// written out in the condition, or null.
 sealed class RuleOperand {
   const RuleOperand();
 }
@@ -173,6 +176,18 @@ final class RuleValueOperand extends RuleOperand {
 
   /// The instance's name on the wire - `IGNORED`, not the Dart constant.
   final String value;
+}
+
+/// A value written out in the condition itself, such as the `0` in `referenceCount == 0`.
+///
+/// It carries the value rather than a name to look up: the boundary is part of the rule, not of the
+/// state being judged, so there is nothing for a caller to supply.
+final class RuleLiteralOperand extends RuleOperand {
+  /// Constructor with the value.
+  const RuleLiteralOperand(this.value);
+
+  /// The value itself - a number, a string or a bool.
+  final Object? value;
 }
 
 /// Absence.
@@ -201,6 +216,7 @@ final class RuleComparison extends RulePredicate {
     final other = switch (right) {
       RuleNullOperand() => null,
       RuleValueOperand(:final value) => value,
+      RuleLiteralOperand(:final value) => value,
       RuleAttributeOperand(:final name) => _read(values, name),
     };
     return switch (operator) {

@@ -213,5 +213,20 @@
         "expected": false
       }
     ]
+  },
+  {
+    "name": "compared against a value written out in the condition",
+    "rule": "MustNotBeReferenced",
+    "predicate": {
+      "op": "compare",
+      "attribute": "referenceCount",
+      "operator": "eq",
+      "right": { "kind": "literal", "value": 0 }
+    },
+    "cases": [
+      { "values": { "referenceCount": 0 }, "expected": true },
+      { "values": { "referenceCount": 1 }, "expected": false },
+      { "values": { "referenceCount": 42 }, "expected": false }
+    ]
   }
 ]

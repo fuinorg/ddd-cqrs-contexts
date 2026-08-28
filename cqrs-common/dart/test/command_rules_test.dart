@@ -19,6 +19,7 @@ void main() {
   const mustBeAssigned = RuleDescriptor(
     rule: 'MustBeAssigned',
     predicate: RuleComparison('assignedEntry', CompareOp.ne, RuleNullOperand()),
+    reason: 'The receipt is not assigned to a journal entry',
     fromAttribute: <String, String>{'assignedEntry': 'assignedEntry'},
   );
 

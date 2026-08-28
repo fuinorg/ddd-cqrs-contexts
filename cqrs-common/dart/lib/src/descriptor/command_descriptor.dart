@@ -134,16 +134,24 @@ class CommandDescriptor {
   /// Answers `false` when it cannot decide, which is what leaves the action offered: the server is
   /// authoritative either way, and hiding something it would have allowed is indistinguishable from a
   /// missing feature.
-  bool refusedFor(Object? Function(String) read, String? identity) {
+  bool refusedFor(Object? Function(String) read, String? identity) =>
+      failingRules(read, identity).isNotEmpty;
+
+  /// The rules this client can answer that say the command would be refused, in model order.
+  ///
+  /// A rule it cannot decide is not a failure: the server is authoritative either way, and hiding
+  /// something it would have allowed is indistinguishable from a missing feature.
+  List<RuleDescriptor> failingRules(Object? Function(String) read, String? identity) {
+    final out = <RuleDescriptor>[];
     for (final rule in rules) {
       try {
         if (!rule.holdsFor(read, identity)) {
-          return true;
+          out.add(rule);
         }
       } on RuleEvaluationException {
         // Cannot say. Offer it and let the server answer.
       }
     }
-    return false;
+    return out;
   }
 }

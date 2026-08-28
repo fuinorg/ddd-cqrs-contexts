@@ -11,6 +11,7 @@ void main() {
     const mustBeAssigned = RuleDescriptor(
       rule: 'MustBeAssigned',
       predicate: RuleComparison('assignedEntry', CompareOp.ne, RuleNullOperand()),
+      reason: r'Receipt ${receipt} is not assigned to a journal entry',
       fromAttribute: <String, String>{'assignedEntry': 'assignedEntry'},
     );
 
@@ -30,6 +31,7 @@ void main() {
     const rule = RuleDescriptor(
       rule: 'MustHaveNoLinks',
       predicate: RuleIsEmpty('entries'),
+      reason: 'It still has journal-entry links',
       fromAttribute: <String, String>{'entries': 'linkedEntries'},
     );
 
@@ -43,6 +45,7 @@ void main() {
     const rule = RuleDescriptor(
       rule: 'MustStillExist',
       predicate: RuleComparison('receipt', CompareOp.ne, RuleNullOperand()),
+      reason: 'It is gone',
       fromIdentity: <String>['receipt'],
     );
 
@@ -56,6 +59,7 @@ void main() {
     const rule = RuleDescriptor(
       rule: 'MustBeAssigned',
       predicate: RuleComparison('assignedEntry', CompareOp.ne, RuleNullOperand()),
+      reason: r'Receipt ${receipt} is not assigned to a journal entry',
       fromAttribute: <String, String>{'assignedEntry': 'assignedEntry'},
     );
 

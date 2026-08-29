@@ -73,4 +73,39 @@ void main() {
       expect(anonymous.source, isNull);
     });
   });
+
+  group('how a row is named to a person', () {
+    const row = TypeDescriptor(
+      name: 'CategoryDetails',
+      attributes: <AttributeDescriptor>[
+        AttributeDescriptor(name: 'id', kind: ValueKind.identifier, role: AttributeRole.identifier),
+        AttributeDescriptor(name: 'name', kind: ValueKind.text),
+        AttributeDescriptor(name: 'kind', kind: ValueKind.text),
+      ],
+      displayFormat: r'${name} (${kind})',
+    );
+
+    test('a composite key reads as one phrase', () {
+      // Which is the whole reason it is a format: no combination of the two attributes' own captions
+      // produces "Office supplies (expense)".
+      final values = <String, Object?>{'name': 'Office supplies', 'kind': 'expense'};
+      expect(row.describe((n) => values[n]), 'Office supplies (expense)');
+    });
+
+    test('a placeholder that resolves to nothing is left standing', () {
+      // Visible, so somebody reports it. An empty gap reads like the model meant it.
+      final values = <String, Object?>{'name': 'Office supplies'};
+      expect(row.describe((n) => values[n]), r'Office supplies (${kind})');
+    });
+
+    test('a type that says nothing has no display key', () {
+      // Not a gap to fill silently: the caller falls back to the first displayed attribute, visibly.
+      const silent = TypeDescriptor(
+        name: 'Rate',
+        attributes: <AttributeDescriptor>[AttributeDescriptor(name: 'rate', kind: ValueKind.decimal)],
+      );
+
+      expect(silent.describe((n) => null), isNull);
+    });
+  });
 }

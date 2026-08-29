@@ -14,6 +14,9 @@ public final class LimitExceededException extends Exception {
     @Serial
     private static final long serialVersionUID = 1000L;
 
+    /** Name this exception is transported under. */
+    public static final String ELEMENT_NAME = "limit-exceeded-exception";
+
     private int max;
     
     /**

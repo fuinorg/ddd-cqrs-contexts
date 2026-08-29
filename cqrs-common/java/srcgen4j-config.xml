@@ -16,7 +16,9 @@
 		<variable name="jaxb" value="false" />
 		<variable name="jaxb_elements" value="false" />
 		<variable name="jsonb" value="false" />
-		<variable name="jackson" value="false" />
+		<!-- On, so an exception generated here can carry its data to a client: the data class is per
+		     serialization framework, and Jackson is what the consuming applications use. -->
+		<variable name="jackson" value="true" />
 	</variables>
 
 	<modules>
@@ -49,6 +51,8 @@
 					<emf:artifact-factory artifact="validator" class="org.fuin.dsl.ddd.gen.constr.ValidatorArtifactFactory" />
 					<emf:artifact-factory artifact="enum" class="org.fuin.dsl.ddd.gen.enumobject.EnumArtifactFactory" />
 					<emf:artifact-factory artifact="exception" class="org.fuin.dsl.ddd.gen.except.ExceptionArtifactFactory" />
+					<!-- What a refusal was about, so a form can show the message under the field it concerns. -->
+					<emf:artifact-factory artifact="exceptionData" class="org.fuin.dsl.ddd.gen.except.ExceptionDataArtifactFactory" />
 					<emf:artifact-factory artifact="pkginfo" class="org.fuin.dsl.ddd.gen.resourceset.PackageInfoArtifactFactory" />
 
 				</emf:emf-generator-config>

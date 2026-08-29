@@ -16,6 +16,9 @@ public final class EntityNotInStateDeletedException extends UniquelyNumberedBusi
     @Serial
     private static final long serialVersionUID = 1000L;
 
+    /** Name this exception is transported under. */
+    public static final String ELEMENT_NAME = "entity-not-in-state-deleted-exception";
+
     private EntityIdPath entityIdPath;
     
     /**

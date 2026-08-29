@@ -19,6 +19,10 @@
 		<!-- On, so an exception generated here can carry its data to a client: the data class is per
 		     serialization framework, and Jackson is what the consuming applications use. -->
 		<variable name="jackson" value="true" />
+		<!-- Prefix of an exception's short identifier, the way "DDD4J" names that library. It becomes the
+		     "code" of a refused command's result, so a refusal from here is as quotable as one from the
+		     application that consumes it. -->
+		<variable name="shortIdPrefix" value="CQRSCO" />
 	</variables>
 
 	<modules>

@@ -74,6 +74,90 @@ void main() {
     });
   });
 
+  group('what a refusal says', () {
+    const command = CommandDescriptor(
+      type: 'CreateCategoryCommand',
+      module: 'categories',
+      target: 'Category',
+      kind: CommandKind.create,
+      doc: 'Creates a category.',
+      message: 'Create category',
+      attributes: <AttributeDescriptor>[
+        AttributeDescriptor(name: 'name', kind: ValueKind.text),
+        AttributeDescriptor(name: 'kind', kind: ValueKind.text),
+      ],
+    );
+
+    test('the kind of problem, and the values it was about', () {
+      // Self describing: the payload sits under the element the result names, so nothing guesses which
+      // field of the JSON is the data.
+      final result = CommandResult.fromJson(<String, dynamic>{
+        'type': 'ERROR',
+        'code': 'MELK-DUPLICATE_CATEGORY_NAME',
+        'message': "A EXPENSE category named 'Office supplies' already exists",
+        'data-class': 'de.fuin.melkheftken.shared.domain.categories.DuplicateCategoryNameExceptionData',
+        'data-element': 'duplicate-category-name-exception',
+        'duplicate-category-name-exception': <String, dynamic>{'name': 'Office supplies', 'kind': 'EXPENSE'},
+      });
+
+      expect(result.accepted, isFalse);
+      expect(result.code, 'MELK-DUPLICATE_CATEGORY_NAME');
+      expect(result.data, <String, dynamic>{'name': 'Office supplies', 'kind': 'EXPENSE'});
+    });
+
+    final refusal = CommandResult.fromJson(<String, dynamic>{
+      'type': 'ERROR',
+      'code': 'MELK-DUPLICATE_CATEGORY_NAME',
+      'data-element': 'e',
+      'e': <String, dynamic>{'name': 'Office supplies', 'kind': 'EXPENSE'},
+    });
+
+    test('a refusal naming two of the command own fields belongs above the form', () {
+      // It does not say which of the two it is about, and a message on the wrong field is worse than
+      // one above the form.
+      expect(command.attributeFor(refusal), isNull);
+    });
+
+    test('a form with one field takes the refusal whatever the refusal calls its values', () {
+      // The case the old table existed for: an edit names its field after the change, so the refusal
+      // says `name` where the form says `newName` and matching on names alone finds nothing.
+      const rename = CommandDescriptor(
+        type: 'RenameCategoryCommand',
+        module: 'categories',
+        target: 'Category',
+        kind: CommandKind.modify,
+        doc: 'Renames a category.',
+        message: 'Rename category',
+        attributes: <AttributeDescriptor>[
+          AttributeDescriptor(name: 'newName', kind: ValueKind.text),
+        ],
+      );
+
+      expect(rename.attributeFor(refusal), 'newName');
+    });
+
+    test('a refusal carrying nothing belongs on the form as a whole', () {
+      final result = CommandResult.fromJson(<String, dynamic>{
+        'type': 'ERROR',
+        'code': 'MELK-SOMETHING_ELSE',
+        'message': 'Nope',
+      });
+
+      expect(result.data, isNull);
+      expect(command.attributeFor(result), isNull);
+    });
+
+    test('and so does one about something this command does not have', () {
+      final result = CommandResult.fromJson(<String, dynamic>{
+        'type': 'ERROR',
+        'data-element': 'e',
+        'e': <String, dynamic>{'somethingElse': 1},
+      });
+
+      expect(command.attributeFor(result), isNull);
+    });
+  });
+
   group('how a row is named to a person', () {
     const row = TypeDescriptor(
       name: 'CategoryDetails',

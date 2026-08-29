@@ -2,6 +2,7 @@ import 'package:cqrs_common/src/descriptor/attribute_descriptor.dart';
 import 'package:cqrs_common/src/descriptor/model_text.dart';
 import 'package:cqrs_common/src/rules/rule_descriptor.dart';
 import 'package:cqrs_common/src/rules/rule_predicate.dart';
+import 'package:cqrs_common/src/transport.dart';
 
 /// What a command does to the aggregate it targets, which decides how a screen offers it.
 enum CommandKind {
@@ -49,7 +50,6 @@ class CommandDescriptor {
     required this.message,
     this.text,
     this.attributes = const <AttributeDescriptor>[],
-    this.rejections = const <String, String>{},
     this.rules = const <RuleDescriptor>[],
   });
 
@@ -93,26 +93,37 @@ class CommandDescriptor {
   /// What the command needs, in model order.
   final List<AttributeDescriptor> attributes;
 
-  /// Which attribute each business rule's refusal belongs on, keyed by the exception's simple name.
+  /// The attribute a refusal belongs on, or `null` when it belongs on the form as a whole.
   ///
-  /// A refusal arrives as the exception's **fully qualified class name** in `code` and the model's own
-  /// wording in `message`, and the message is written to be read by a person. What the wire does not
-  /// say is which field the rule was about - and showing "a category named X already exists" in a
-  /// snackbar, rather than under the name field, is the difference between a correction and a puzzle.
+  /// Read off what the server sent rather than from a table compiled into the client. A refusal carries
+  /// the values it was about, keyed by the model's own attribute names, so the field is found by
+  /// matching those keys against this command's own attributes - and a renamed attribute either matches
+  /// on both sides or on neither.
   ///
-  /// The model does know: a rule is declared on an operation and reads particular attributes. Guessing
-  /// it from the class name works for `DuplicateCategoryNameException` and `name`, and stops working
-  /// the moment the attribute is called `newName` - so it is stated rather than guessed, and the Dart
-  /// target has to emit it from the operation's declared `business-rules`.
-  final Map<String, String> rejections;
-
-  /// The attribute the refusal [code] belongs on, or `null` when it belongs on the form as a whole.
-  String? attributeFor(String? code) {
-    if (code == null) {
+  /// It used to be a map from an exception's *simple* name to a field, filled by the generator and
+  /// joined to the server's *qualified* name with a substring. Both builds stayed green when a name
+  /// changed, and the refusal silently stopped landing on its field.
+  String? attributeFor(CommandResult result) {
+    final data = result.data;
+    if (data == null) {
       return null;
     }
-    final simple = code.substring(code.lastIndexOf('.') + 1);
-    return rejections[simple];
+    final displayed = attributes.where((a) => a.displayed).toList();
+
+    // Exactly one, or none. Two of this command's fields named by the refusal means it does not say
+    // which one it is about, and a message on the wrong field is worse than one above the form.
+    final matching = displayed.where((a) => data.containsKey(a.name)).toList();
+    if (matching.length == 1) {
+      return matching.single.name;
+    }
+
+    // A form with one field: any field-level refusal is about it, whatever the refusal calls its own
+    // values. This is what covers an edit, whose field is named after the change - `newName` where the
+    // refusal says `name` - and it is exactly where matching on names alone stops working.
+    if (displayed.length == 1) {
+      return displayed.single.name;
+    }
+    return null;
   }
 
   /// The rules guarding this command that a client can answer for itself.

@@ -32,7 +32,16 @@ enum CommandTargetOrigin {
   /// The path of the row being acted on, which is every ordinary change and removal.
   row,
 
-  /// A natural key, which the client cannot compose without an encoding only the write side has.
+  /// A natural key, composed from parts the model names.
+  ///
+  /// The client builds it: the generated identifier carries an `of(...)` constructor emitted from the
+  /// same declaration as the write side's own encoding, so the two agree by construction rather than
+  /// by a client copying a constant it cannot check. This used to read "which the client cannot
+  /// compose without an encoding only the write side has", and that was true while the string form was
+  /// hand-written in Java beside a generated abstract class.
+  ///
+  /// A command of this origin still carries the key's parts as attributes, because they are the form
+  /// that collects them - there is nothing in a descriptor that describes a key's parts on their own.
   derived,
 }
 

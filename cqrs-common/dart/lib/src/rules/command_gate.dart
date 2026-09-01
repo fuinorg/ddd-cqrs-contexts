@@ -47,11 +47,17 @@ class GatedCommand {
 ///
 /// Where it is not - where removing the action would leave nothing behind saying why - the action
 /// stays, disabled, wearing the sentence the server would have refused it with.
+///
+/// [reasonTemplate] supplies that sentence in the language on screen, looked up under the rule's own
+/// [RuleDescriptor.text]. Without it the model's wording is used, which is English: the caption above a
+/// disabled action comes from a bundle, and for as long as this did not, it was the one line on the
+/// screen that did not follow the language.
 List<GatedCommand> gateCommands(
   Iterable<CommandDescriptor> commands,
   Object? Function(String) read,
-  String? identity,
-) {
+  String? identity, {
+  String? Function(RuleDescriptor)? reasonTemplate,
+}) {
   final all = commands.toList(growable: false);
   final failing = <int, List<RuleDescriptor>>{
     for (var i = 0; i < all.length; i++) i: all[i].failingRules(read, identity),
@@ -73,7 +79,8 @@ List<GatedCommand> gateCommands(
     gated.add(explained
         ? GatedCommand(all[i], CommandAvailability.hidden)
         : GatedCommand(all[i], CommandAvailability.disabled,
-            reason: failed.first.reasonFor(read, identity)));
+            reason: failed.first.reasonFor(read, identity,
+                template: reasonTemplate?.call(failed.first))));
   }
   return gated;
 }

@@ -22,6 +22,7 @@ const mustNotBeIgnored = RuleDescriptor(
   rule: 'MustNotBeIgnored',
   predicate: RuleComparison('status', CompareOp.ne, RuleValueOperand('IGNORED')),
   reason: r'Transaction ${transaction} is ignored',
+  text: ModelText(bundle: 'Bankaccounts', key: 'TransactionIgnoredException'),
   fromAttribute: <String, String>{'status': 'status'},
   fromIdentity: <String>['transaction'],
 );
@@ -183,6 +184,38 @@ void main() {
     );
     expect(menu.first.availability, CommandAvailability.disabled);
     expect(menu.first.reason, 'Acme AG has no tax number');
+  });
+
+  test('the reason is said in the language the caller supplies it in', () {
+    // The caption above a disabled action comes from a bundle; for as long as this did not, it was the
+    // one line on the screen that stayed in the model's own language. Substitution runs after the
+    // lookup - a translation is a template too.
+    final menu = gateCommands(
+      <CommandDescriptor>[
+        command('IgnoreTransactionCommand', const <RuleDescriptor>[mustNotBeIgnored]),
+      ],
+      row(const <String, Object?>{'status': 'IGNORED'}),
+      'TRANSACTION 45',
+      reasonTemplate: (rule) => rule.text?.key == 'TransactionIgnoredException'
+          ? r'Umsatz ${transaction} ist ignoriert'
+          : null,
+    );
+
+    expect(menu.single.availability, CommandAvailability.disabled);
+    expect(menu.single.reason, 'Umsatz TRANSACTION 45 ist ignoriert');
+  });
+
+  test('and falls back to the model when the caller has no translation for it', () {
+    final menu = gateCommands(
+      <CommandDescriptor>[
+        command('IgnoreTransactionCommand', const <RuleDescriptor>[mustNotBeIgnored]),
+      ],
+      row(const <String, Object?>{'status': 'IGNORED'}),
+      'TRANSACTION 45',
+      reasonTemplate: (rule) => null,
+    );
+
+    expect(menu.single.reason, 'Transaction TRANSACTION 45 is ignored');
   });
 
   test('a rule this client cannot answer leaves the action offered', () {

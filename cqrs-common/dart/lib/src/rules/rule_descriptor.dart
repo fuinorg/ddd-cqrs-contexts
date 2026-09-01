@@ -1,4 +1,5 @@
 import 'package:cqrs_common/src/descriptor/message_template.dart';
+import 'package:cqrs_common/src/descriptor/model_text.dart';
 import 'package:cqrs_common/src/rules/rule_predicate.dart';
 
 /// One business rule as a client can answer it, and where to get the values from.
@@ -20,6 +21,7 @@ class RuleDescriptor {
     required this.rule,
     required this.predicate,
     required this.reason,
+    this.text,
     this.fromAttribute = const <String, String>{},
     this.fromIdentity = const <String>[],
   });
@@ -37,6 +39,14 @@ class RuleDescriptor {
   /// one of these to state the end state - "The receipt is not assigned to a journal entry" - rather
   /// than to complain about the caller, which is what a disabled action's tooltip needs to say.
   final String reason;
+
+  /// Where that sentence is translated: the exception's own bundle and key.
+  ///
+  /// Carried rather than resolved here, because a bundle is a fact about the application and this
+  /// package knows nothing about one. A caller that has a translation passes it to [reasonFor]; one
+  /// that has none gets [reason], which is the model's own wording - the same fallback every other
+  /// caption makes.
+  final ModelText? text;
 
   /// What the rule calls a value, against what the thing it is about calls it.
   ///
@@ -57,9 +67,12 @@ class RuleDescriptor {
   ///
   /// Reads what the predicate reads and nothing else, so a message can only name a value the rule was
   /// handed. An unresolvable placeholder is left standing, as everywhere else.
-  String reasonFor(Object? Function(String) read, String? identity) {
+  ///
+  /// [template] is the same sentence in the language on screen, looked up under [text] by a caller that
+  /// has a bundle. Substitution runs after the lookup, never before: a translation is a template too.
+  String reasonFor(Object? Function(String) read, String? identity, {String? template}) {
     final values = _valuesFor(read, identity);
-    return renderMessage(reason, (name) => values[name]);
+    return renderMessage(template ?? reason, (name) => values[name]);
   }
 
   /// Whether the rule holds, given a way to read the thing's attributes and its identity.

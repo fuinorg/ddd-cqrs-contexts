@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.Objects;
 import org.fuin.ddd4j.core.EntityIdPath;
 import org.fuin.dsl.cqrs.common.rules.BusinessRuleViolationException;
+import org.fuin.dsl.cqrs.common.wording.Wording;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ExceptionShortIdentifable;
 import org.fuin.objects4j.core.KeyValue;
@@ -31,7 +32,7 @@ public final class EntityInStateDeletedException extends BusinessRuleViolationEx
      * @param entityIdPath An ordered list of entity identifiers. An aggregate root will be the first entry if it's contained in the list. See <a href="https://github.com/fuinorg/ddd-4-java/blob/master/src/main/java/org/fuin/ddd4j/ddd/EntityIdPath.java">org.fuin.ddd4j.ddd.EntityIdPath</a>.
      */
     public EntityInStateDeletedException(final EntityIdPath entityIdPath) {
-        super(Objects.requireNonNull(KeyValueEL.replace("Expected the entity to be in normal state, but was 'deleted': ${entityIdPath}",  new KeyValue("entityIdPath", entityIdPath))));
+        super(Objects.requireNonNull(KeyValueEL.replace(Wording.message("Exceptions", "EntityInStateDeletedException", "Expected the entity to be in normal state, but was 'deleted': ${entityIdPath}"),  new KeyValue("entityIdPath", entityIdPath))));
         Contract.requireArgNotNull("entityIdPath", entityIdPath);
         
         this.entityIdPath = entityIdPath;

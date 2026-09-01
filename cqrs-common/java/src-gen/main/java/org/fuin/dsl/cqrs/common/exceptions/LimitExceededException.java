@@ -2,6 +2,7 @@ package org.fuin.dsl.cqrs.common.exceptions;
 
 import java.io.Serial;
 import java.util.Objects;
+import org.fuin.dsl.cqrs.common.wording.Wording;
 import org.fuin.objects4j.common.Contract;
 import org.fuin.objects4j.common.ExceptionShortIdentifable;
 import org.fuin.objects4j.core.KeyValue;
@@ -29,7 +30,7 @@ public final class LimitExceededException extends Exception implements Exception
      * @param max 32-bit signed two's complement integer, which has a minimum value of -231 and a maximum value of 231-1. See <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">java.lang.Integer</a>.
      */
     public LimitExceededException(final int max) {
-        super(Objects.requireNonNull(KeyValueEL.replace("The maximum number of items ({max}) was exceeded",  new KeyValue("max", max))));
+        super(Objects.requireNonNull(KeyValueEL.replace(Wording.message("Exceptions", "LimitExceededException", "The maximum number of items ({max}) was exceeded"),  new KeyValue("max", max))));
         Contract.requireArgNotNull("max", max);
         
         this.max = max;

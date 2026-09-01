@@ -2,6 +2,7 @@ package org.fuin.dsl.cqrs.conformance.rules;
 
 import java.io.Serial;
 import org.fuin.dsl.cqrs.common.rules.BusinessRuleViolationException;
+import org.fuin.dsl.cqrs.common.wording.Wording;
 
 /**
  * Refused. Which rule refused is what the test asserts; the wording plays no part.
@@ -15,7 +16,7 @@ public final class ConformanceException extends BusinessRuleViolationException {
      * Constructs a new instance of the exception.
      */
     public ConformanceException() {
-        super("The rule does not hold");
+        super(Wording.message("Rules", "ConformanceException", "The rule does not hold"));
     }
 
 }
